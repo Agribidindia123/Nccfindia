@@ -1,0 +1,82 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "PUT",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "expired": "expired_token_example",
+    "invalid": "invalid123",
+    "malformed": "malformed!@#token",
+    "empty": ""
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_YIELD_UPDATE_001",
+      "description": "Positive - Update yield with valid token",
+      "category": "Positive | Functional | CRUD",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "valid",
+      "body": {
+        "quantity_per_hectare_in_qtl": 1,
+        "update_date": "2025-10-09T07:55:56.718Z"
+      },
+      "expected_status": 200,
+      "expected_response_contains": ["Yield updated successfully", "yield_id"]
+    },
+    {
+      "test_id": "TC_YIELD_UPDATE_002",
+      "description": "Negative - No token provided",
+      "category": "Negative | Authorization",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "empty",
+      "body": {
+        "quantity_per_hectare_in_qtl": 1,
+        "update_date": "2025-10-09T07:55:56.718Z"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "TC_YIELD_UPDATE_003",
+      "description": "Negative - Expired token",
+      "category": "Negative | Authentication",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "expired",
+      "body": {
+        "quantity_per_hectare_in_qtl": 1,
+        "update_date": "2025-10-09T07:55:56.718Z"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Token expired"
+    },
+    {
+      "test_id": "TC_YIELD_UPDATE_004",
+      "description": "Negative - Malformed token",
+      "category": "Negative | Authentication",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "malformed",
+      "body": {
+        "quantity_per_hectare_in_qtl": 1,
+        "update_date": "2025-10-09T07:55:56.718Z"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC_YIELD_UPDATE_005",
+      "description": "Negative - Missing field",
+      "category": "Negative | Validation",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "valid",
+      "body": {
+        "update_date": "2025-10-09T13:18:46.196Z"
+      },
+      "expected_status": 200,
+       "expected_response_contains": ["Yield updated successfully", "yield_id"]
+ 
+    }
+  ]
+}
