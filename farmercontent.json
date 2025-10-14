@@ -1,0 +1,111 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": { "Content-Type": "application/json" },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "expired": "your_expired_token_here",
+    "malformed": "malformed_token"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "type": "Positive-Data Retrieval",
+      "description": "Search farmers with valid name content — Positive test, Data Retrieval, Integration",
+      "endpoint": "/farmer/farmer_by_content",
+      "auth_token": "valid",
+      "query_params": { "content": "Mr. AANVIRAPPA MAHANTHAPPA" },
+      "expected_status": 200,
+      "expected_response": {
+        "status": 0,
+        "message": "Success",
+        "data": [
+          {
+            "farmer_id": "31f43ecb-d6e5-486f-8b17-e4296540a3e0",
+            "farmer_code": "string",
+            "farmer_full_name": "string",
+            "mobile": "string",
+            "create_date": "2025-09-27T11:36:33.284Z"
+          }
+        ],
+        "total_found": 1
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "type": "Negative-Authentication",
+      "description": "Call API with invalid authentication token — Negative test, Authentication & Authorization, Security",
+      "endpoint": "/farmer/farmer_by_content",
+      "auth_token": "invalid",
+      "query_params": { "content": "sham" },
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Invalid token.",
+        "data": [],
+        "total_found": 0
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "type": "Positive-Data Validation",
+      "description": "Valid content provided but no matching farmer records found — Positive test, Data Validation, Integration",
+      "endpoint": "/farmer/farmer_by_content",
+      "auth_token": "valid",
+      "query_params": { "content": "rr" },
+      "expected_status": 200,
+      "expected_response": {
+        "status": 0,
+        "message": "Success",
+        "data": [],
+        "total_found": 0
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "type": "Negative-Authentication",
+      "description": "Call API without authentication header — Negative test, Authentication & Authorization, Security",
+      "endpoint": "/farmer/farmer_by_content",
+      "auth_token": "empty",
+      "query_params": { "content": "sham" },
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Authentication token is missing or invalid.",
+        "data": [],
+        "total_found": 0
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "type": "Negative-Authentication",
+      "description": "Call API with expired authentication token — Negative test, Authentication & Authorization, Security",
+      "endpoint": "/farmer/farmer_by_content",
+      "auth_token": "expired",
+      "query_params": { "content": "sham" },
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Token expired.",
+        "data": [],
+        "total_found": 0
+      }
+    },
+    {
+      "test_id": "TC-006",
+      "type": "Negative-Authentication",
+      "description": "Call API with malformed authentication token — Negative test, Authentication & Authorization, Security",
+      "endpoint": "/farmer/farmer_by_content",
+      "auth_token": "malformed",
+      "query_params": { "content": "sham" },
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Malformed token.",
+        "data": [],
+        "total_found": 0
+      }
+    }
+  ]
+}

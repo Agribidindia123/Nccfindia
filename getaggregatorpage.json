@@ -1,0 +1,70 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Dm",
+    "expired": "iXd32fC8Dm00",
+    "malformed": "malformed_token"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "type": "Positive-Integration",
+      "description": "Fetch all aggregators with required filters only (page: 1) — Positive test, Integration, CRUD Read operation, validates response structure and pagination",
+      "endpoint": "/aggregator/get_all_aggregators/1",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": "Successfully retrieved 200 aggregators (page 1)"
+    },
+    {
+      "test_id": "TC-002",
+      "type": "Positive-Integration",
+      "description": "Fetch all active aggregators (page: 2) — Positive test for pagination and filtering",
+      "endpoint": "/aggregator/get_all_aggregators/2",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": "Successfully retrieved 200 aggregators (page 2)"
+    },
+    {
+      "test_id": "TC-003",
+      "type": "Negative-Boundary",
+      "description": "Fetch aggregators with invalid UUID in state_master_id — Negative test for validation (422)",
+      "endpoint": "/aggregator/get_all_aggregators/1",
+      "method": "GET",
+      "auth_token": "valid",
+      "query_params": {
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056M"
+      },
+      "expected_status": 422,
+      "expected_response": "Validation failed. Please check the required fields and their formats."
+    },
+    {
+      "test_id": "TC-004",
+      "type": "Security-Authentication",
+      "description": "Fetch aggregators with expired token — Authentication negative test",
+      "endpoint": "/aggregator/get_all_aggregators/1",
+      "method": "GET",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Token expired."
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "type": "Security-Authorization",
+      "description": "Fetch aggregators with malformed token — Authorization negative test",
+      "endpoint": "/aggregator/get_all_aggregators/1",
+      "method": "GET",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Malformed token."
+      }
+    }
+  ]
+}

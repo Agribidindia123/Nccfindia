@@ -1,0 +1,114 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "PATCH",
+  "headers": { "Content-Type": "application/json" },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "expired": "expiredTokenExample",
+    "malformed": "gf*^*?p"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional - Positive",
+      "type": "Positive-CRUD-Integration",
+      "description": "Activate dispatch type with valid dispatch_type_id and status=1 — validates status update to active",
+      "endpoint": "/dispatch_type/update_dispatch_type_status/188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0",
+      "method": "PATCH",
+      "path_params": { "dispatch_type_id": "188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0" },
+      "query_params": { "status": 1 },
+      "request_body": {},
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": { "status": "success" }
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional - Positive",
+      "type": "Positive-CRUD-Integration",
+      "description": "Deactivate dispatch type with valid dispatch_type_id and status=0 — validates status update to inactive",
+      "endpoint": "/dispatch_type/update_dispatch_type_status/188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0",
+      "method": "PATCH",
+      "path_params": { "dispatch_type_id": "188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0" },
+      "query_params": { "status": 0, "deleted_by": "qa_user" },
+      "request_body": {},
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": { "status": "success" }
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Functional - Negative",
+      "type": "Negative-Boundary-DataValidation",
+      "description": "Update with invalid dispatch_type_id (UUID format incorrect) — tests input validation for UUID",
+      "endpoint": "/dispatch_type/update_dispatch_type_status/123-invalid-uuid",
+      "method": "PATCH",
+      "path_params": { "dispatch_type_id": "123-invalid-uuid" },
+      "query_params": { "status": 1 },
+      "request_body": {},
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": { "status": "error" }
+    },
+    {
+      "test_id": "TC-004",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Update with invalid token — validates API rejects requests with incorrect token",
+      "endpoint": "/dispatch_type/update_dispatch_type_status/188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0",
+      "method": "PATCH",
+      "path_params": { "dispatch_type_id": "188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0" },
+      "query_params": { "status": 1 },
+      "request_body": {},
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_response": { "detail": "Unauthorized" }
+    },
+    {
+      "test_id": "TC-005",
+      "category": "Functional - Negative",
+      "type": "Negative-Boundary-DataValidation",
+      "description": "Update with invalid status value (must be 0 or 1) — tests API validation for status parameter",
+      "endpoint": "/dispatch_type/update_dispatch_type_status/188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0",
+      "method": "PATCH",
+      "path_params": { "dispatch_type_id": "188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0" },
+      "query_params": { "status": 5 },
+      "request_body": {},
+      "auth_token": "valid",
+      "expected_status": 400,
+      "expected_response": {
+        "status": "error",
+        "message": "Invalid status value. Must be 0 or 1."
+      }
+    },
+    {
+      "test_id": "TC-006",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Update with expired token — validates API rejects requests with expired token",
+      "endpoint": "/dispatch_type/update_dispatch_type_status/188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0",
+      "method": "PATCH",
+      "path_params": { "dispatch_type_id": "188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0" },
+      "query_params": { "status": 1 },
+      "request_body": {},
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": { "detail": "Token has expired" }
+    },
+    {
+      "test_id": "TC-007",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Update with malformed token — validates API rejects requests with malformed token format",
+      "endpoint": "/dispatch_type/update_dispatch_type_status/188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0",
+      "method": "PATCH",
+      "path_params": { "dispatch_type_id": "188a0e82-7a7a-4ca1-b8a0-2bda5cf31ad0" },
+      "query_params": { "status": 1 },
+      "request_body": {},
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": { "detail": "Token format is invalid" }
+    }
+  ]
+}

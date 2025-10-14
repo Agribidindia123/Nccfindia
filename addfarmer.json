@@ -1,0 +1,178 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "expired": "iXd32fC8Dx",
+    "malformed": "invalid_token"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Add a farmer with valid data — Positive, CRUD Operation",
+      "endpoint": "/farmer/add_farmer",
+      "auth_token": "valid",
+      "request_body": {
+        "farmer_full_name": "Test",
+        "farmer_father_full_name": "DEMO",
+        "farmer_date_of_birth": "1987-09-30",
+        "farmer_social_category": "OBC",
+        "farmer_profile_image": "string",
+        "email_id": "ram@gmail.com",
+        "mobile_number": "8945678765",
+        "farmer_address": "pune",
+        "pin_code": "433055",
+        "four_digit_adhar_number_of_farmer": "6578",
+        "masked_pan_number_of_farmer": "ASERT****H",
+        "farmer_type": "marginal",
+        "farmer_gender": "male",
+        "farmer_deactivation_remark": "string",
+        "aggregator_id": "c314ca5a-640a-4320-82ad-8ae326a3164e",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "80d7de71-474e-450b-b35f-d98ed4ada97a",
+        "sub_district_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "city_master_id": "c0759fa2-e4e8-415a-8430-8b75144a03a6",
+        "village_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": 0,
+        "message": "Farmer added successfully",
+        "data": [],
+        "total_count": 1
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Add farmer without required field (mobile_number) — Negative, Data Validation",
+      "endpoint": "/farmer/add_farmer",
+      "auth_token": "valid",
+      "request_body": {
+        "farmer_full_name": "sham",
+        "farmer_father_full_name": "ram",
+        "farmer_date_of_birth": "1987-09-30",
+        "farmer_social_category": "SC",
+        "farmer_profile_image": "string",
+        "email_id": "ram@gmail.com",
+        "farmer_address": "pune",
+        "pin_code": "433055",
+        "four_digit_adhar_number_of_farmer": "6578",
+        "masked_pan_number_of_farmer": "ASERT****H",
+        "farmer_type": "marginal",
+        "farmer_gender": "male",
+        "farmer_deactivation_remark": "string",
+        "aggregator_id": "c314ca5a-640a-4320-82ad-8ae326a3164e",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "80d7de71-474e-450b-b35f-d98ed4ada97a",
+        "sub_district_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "city_master_id": "c0759fa2-e4e8-415a-8430-8b75144a03a6",
+        "village_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      },
+      "expected_status": 422,
+      "expected_response": {
+        "message": "Validation failed",
+        "field": "mobile_number"
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Add farmer with invalid email format — Negative, Data Validation",
+      "endpoint": "/farmer/add_farmer",
+      "auth_token": "valid",
+      "request_body": {
+        "farmer_full_name": "raj",
+        "farmer_father_full_name": "ram",
+        "farmer_date_of_birth": "1987-09-30",
+        "farmer_social_category": "SC",
+        "farmer_profile_image": "string",
+        "email_id": "raj@gmail",
+        "mobile_number": "9675678909",
+        "farmer_address": "pune",
+        "pin_code": "433055",
+        "four_digit_adhar_number_of_farmer": "6578",
+        "masked_pan_number_of_farmer": "ASERT****H",
+        "farmer_type": "marginal",
+        "farmer_gender": "male",
+        "farmer_deactivation_remark": "string",
+        "aggregator_id": "c314ca5a-640a-4320-82ad-8ae326a3164e",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "80d7de71-474e-450b-b35f-d98ed4ada97a",
+        "sub_district_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "city_master_id": "c0759fa2-e4e8-415a-8430-8b75144a03a6",
+        "village_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      },
+      "expected_status": 422,
+      "expected_response": {
+        "message": "Invalid email format"
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Add farmer with expired token — Negative, Authentication & Authorization",
+      "endpoint": "/farmer/add_farmer",
+      "auth_token": "expired",
+      "request_body": {
+        "farmer_full_name": "TestExpired",
+        "farmer_father_full_name": "DemoExpired",
+        "farmer_date_of_birth": "1990-01-01",
+        "farmer_social_category": "SC",
+        "farmer_profile_image": "string",
+        "email_id": "expired@gmail.com",
+        "mobile_number": "9000000000",
+        "farmer_address": "pune",
+        "pin_code": "433055",
+        "four_digit_adhar_number_of_farmer": "1234",
+        "masked_pan_number_of_farmer": "ASERT****E",
+        "farmer_type": "small",
+        "farmer_gender": "male",
+        "farmer_deactivation_remark": "string",
+        "aggregator_id": "c314ca5a-640a-4320-82ad-8ae326a3164e",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "80d7de71-474e-450b-b35f-d98ed4ada97a",
+        "sub_district_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "city_master_id": "c0759fa2-e4e8-415a-8430-8b75144a03a6",
+        "village_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "message": "Token expired"
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Add farmer with malformed token — Negative, Authentication & Authorization",
+      "endpoint": "/farmer/add_farmer",
+      "auth_token": "malformed",
+      "request_body": {
+        "farmer_full_name": "TestMalformed",
+        "farmer_father_full_name": "DemoMalformed",
+        "farmer_date_of_birth": "1990-01-01",
+        "farmer_social_category": "SC",
+        "farmer_profile_image": "string",
+        "email_id": "malformed@gmail.com",
+        "mobile_number": "9000000001",
+        "farmer_address": "pune",
+        "pin_code": "433055",
+        "four_digit_adhar_number_of_farmer": "5678",
+        "masked_pan_number_of_farmer": "ASERT****M",
+        "farmer_type": "small",
+        "farmer_gender": "female",
+        "farmer_deactivation_remark": "string",
+        "aggregator_id": "c314ca5a-640a-4320-82ad-8ae326a3164e",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "80d7de71-474e-450b-b35f-d98ed4ada97a",
+        "sub_district_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "city_master_id": "c0759fa2-e4e8-415a-8430-8b75144a03a6",
+        "village_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "message": "Malformed token"
+      }
+    }
+  ]
+}

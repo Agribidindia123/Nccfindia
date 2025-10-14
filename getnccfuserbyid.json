@@ -1,0 +1,103 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "expired": "expiredTokenExample",
+    "malformed": "malformedTokenExample",
+    "empty": ""
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Retrieve existing NCCF user by valid user_id — Verifies successful fetch of specific user record, Data Validation and Integration testing",
+      "endpoint": "/nccf_user/get_nccf_user/6407ef77-61c3-4245-906d-0c20ab41a3be",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": { "status": 200 }
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional - Negative",
+      "type": "Negative-Boundary-CRUD",
+      "description": "Retrieve NCCF user by non-existing user_id — Verifies API returns 404 when the resource does not exist, Boundary and Negative testing",
+      "endpoint": "/nccf_user/get_nccf_user/4872fcf5-d2f6-48c7-92db-40714575fea9",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_response": {
+        "detail": "User with ID 4872fcf5-d2f6-48c7-92db-40714575fea9 not found"
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Missing Authorization Header — Verifies API rejects requests without token, Security and Authentication testing",
+      "endpoint": "/nccf_user/get_nccf_user/2407f22e-dc67-4925-a2c6-38238f8dd4f1",
+      "method": "GET",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Missing or invalid Authorization header"
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "category": "Functional - Positive",
+      "type": "Positive-DataValidation-Integration",
+      "description": "Validate data with valid token — Ensures API returns correct data structure and status with valid authorization",
+      "endpoint": "/nccf_user/get_nccf_user/6407ef77-61c3-4245-906d-0c20ab41a3be",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": { "status": 200 }
+    },
+    {
+      "test_id": "TC-005",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Request with invalid token — Verifies API rejects requests with incorrect token, Security and Authorization testing",
+      "endpoint": "/nccf_user/get_nccf_user/2407f22e-dc67-4925-a2c6-38238f8dd4f1",
+      "method": "GET",
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Invalid token. Expected: iXd32fC8Dv, Got: iXd32fC8Di"
+      }
+    },
+    {
+      "test_id": "TC-006",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Request with expired token — Verifies API rejects requests using an expired token, Security testing",
+      "endpoint": "/nccf_user/get_nccf_user/2407f22e-dc67-4925-a2c6-38238f8dd4f1",
+      "method": "GET",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Unauthorized access. Token has expired."
+      }
+    },
+    {
+      "test_id": "TC-007",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Request with malformed token — Verifies API rejects requests using a malformed token, Security testing",
+      "endpoint": "/nccf_user/get_nccf_user/2407f22e-dc67-4925-a2c6-38238f8dd4f1",
+      "method": "GET",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Unauthorized access. Token format is invalid."
+      }
+    }
+  ]
+}

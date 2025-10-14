@@ -1,0 +1,124 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Dm",
+    "expired": "your_expired_token_here",
+    "malformed": "malformed_token"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "type": "Positive-Integration",
+      "description": "Retrieve all dispatch types without any filters — Positive test, Integration, CRUD Read operation, validates API returns all dispatch types with expected response structure",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "string",
+        "message": "string",
+        "data": ["string"],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "type": "Positive-Integration",
+      "description": "Retrieve active dispatch types with status=1 — Positive test, Integration, Data Validation, ensures filtering by status works correctly",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "query_params": {
+        "status": 1
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "string",
+        "message": "string",
+        "data": ["string"],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "type": "Positive-Integration",
+      "description": "Retrieve dispatch types filtered by state_master_id — Positive test, Integration, Data Validation, validates filtering by state_master_id",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "query_params": {
+        "state_master_id": "5a8f7e10-4c88-4d2d-a1fc-b3b6c9cf1e91"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "string",
+        "message": "string",
+        "data": ["string"],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "type": "Positive-Integration",
+      "description": "Retrieve dispatch types filtered by multiple parameters — Positive test, Integration, Data Validation, validates API supports multiple filters correctly",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "query_params": {
+        "status": 1,
+        "district_master_id": "9b08b607-1539-4e69-bd9a-1b77c94e0b17"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "string",
+        "message": "string",
+        "data": ["string"],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "type": "Negative-Data Validation",
+      "description": "Invalid filter value for status — Negative test, Data Validation, ensures API rejects invalid status value",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "query_params": {
+        "status": 5
+      },
+      "auth_token": "valid",
+      "expected_status": 400,
+      "expected_response": "Bad Request"
+    },
+    {
+      "test_id": "TC-006",
+      "type": "Negative-Authentication",
+      "description": "Call API with expired token — Negative test, Authentication & Authorization, Security, validates expired token handling",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Token expired."
+      }
+    },
+    {
+      "test_id": "TC-007",
+      "type": "Negative-Authentication",
+      "description": "Call API with malformed token — Negative test, Authentication & Authorization, Security, validates malformed token handling",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Malformed token."
+      }
+    }
+  ]
+}

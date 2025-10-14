@@ -1,0 +1,171 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "PATCH",
+  "headers": { "Content-Type": "application/json" },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Dm",
+    "expired": "expiredTokenExample",
+    "malformed": "malformedTokenExample"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional - Positive",
+      "type": "Positive-CRUD-Integration",
+      "description": "Update user with valid data — validates full update of user details",
+      "endpoint": "/nccf_user/update_nccf_user/e3698b18-5820-438e-8400-cf662e7da785",
+      "method": "PATCH",
+      "request_body": {
+        "email_id": "test09@fmail.com",
+        "mobile_number": "8789876765",
+        "fullname": "John Doe"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "User updated successfully",
+        "data": { "additionalProp1": {} },
+        "user_id": "e3698b18-5820-438e-8400-cf662e7da785"
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional - Positive",
+      "type": "Positive-CRUD-Integration",
+      "description": "Partial update (only email) — validates partial update functionality",
+      "endpoint": "/nccf_user/update_nccf_user/e3698b18-5820-438e-8400-cf662e7da785",
+      "method": "PATCH",
+      "request_body": { "email_id": "new1.email@example.com" },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "User updated successfully",
+        "data": { "additionalProp1": {} },
+        "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Boundary",
+      "description": "Invalid email format — API should reject invalid email values",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": { "email_id": "invalid-email" },
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": {
+        "status": "error",
+        "message": "Invalid email format.",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Boundary",
+      "description": "Invalid mobile number format — API should reject invalid mobile numbers",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": { "mobile_number": "12345" },
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": {
+        "status": "error",
+        "message": "Invalid mobile number format.",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Conflict",
+      "description": "Email already exists (duplicate) — API should reject duplicate email updates",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": { "email_id": "existing@example.com" },
+      "auth_token": "valid",
+      "expected_status": 409,
+      "expected_response": {
+        "status": "error",
+        "message": "Email already exists.",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-006",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Conflict",
+      "description": "Mobile number already exists (duplicate) — API should reject duplicate mobile numbers",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": { "mobile_number": "9876543210" },
+      "auth_token": "valid",
+      "expected_status": 409,
+      "expected_response": {
+        "status": "error",
+        "message": "Mobile number already exists.",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-007",
+      "category": "Functional - Negative",
+      "type": "Negative-Boundary-DataValidation",
+      "description": "User ID not found — API should return error for non-existent user ID",
+      "endpoint": "/nccf_user/update_nccf_user/00000000-0000-0000-0000-000000000000",
+      "method": "PATCH",
+      "request_body": { "fullname": "John Doe" },
+      "auth_token": "valid",
+      "expected_status": 409,
+      "expected_response": {
+        "status": "error",
+        "message": "User not found.",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-008",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Boundary",
+      "description": "Empty request body — API should reject empty PATCH payload",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": {},
+      "auth_token": "valid",
+      "expected_status": 400,
+      "expected_response": {
+        "status": "error",
+        "message": "Request body cannot be empty.",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-009",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Update with expired token — validates API rejects requests with expired authentication",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": { "fullname": "John Doe" },
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": { "detail": "Token has expired" }
+    },
+    {
+      "test_id": "TC-010",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Update with malformed token — validates API rejects requests with invalid token format",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": { "fullname": "John Doe" },
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": { "detail": "Token format is invalid" }
+    }
+  ]
+}

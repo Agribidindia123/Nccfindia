@@ -1,0 +1,178 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Dm",
+    "expired": "your_expired_token_here",
+    "malformed": "invalid_token"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Create aggregator with valid required fields — Positive, CRUD Operation, Data Validation",
+      "endpoint": "/aggregator/create",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "email_id": "Karwarpacs@gmail.com",
+        "mobile_number": "8567898767"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": "Aggregator created successfully"
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Missing required field: email_id — Negative, Data Validation",
+      "endpoint": "/aggregator/create",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "mobile_number": "8567898767"
+      },
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": "Unprocessable Entity - Missing email_id"
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Invalid mobile number format — Negative, Data Validation, Boundary",
+      "endpoint": "/aggregator/create",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "email_id": "Karwarpacs@gmail.com",
+        "mobile_number": "9999"
+      },
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": "Bad Request - Invalid mobile number"
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Invalid email format — Negative, Data Validation, Boundary",
+      "endpoint": "/aggregator/create",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "email_id": "Karwarpacs@",
+        "mobile_number": "9999"
+      },
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": "Unprocessable Entity - Invalid email format"
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Duplicate mobile number — Negative, Data Validation, Security",
+      "endpoint": "/aggregator/create",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "email_id": "Karwarpacs@gmail.com",
+        "mobile_number": "8567898767"
+      },
+      "auth_token": "valid",
+      "expected_status": 400,
+      "expected_response": "Bad Request - Duplicate mobile number"
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Duplicate email id — Negative, Data Validation, Security",
+      "endpoint": "/aggregator/create",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "email_id": "Karwarpacs@gmail.com",
+        "mobile_number": "8567898767"
+      },
+      "auth_token": "valid",
+      "expected_status": 400,
+      "expected_response": "Bad Request - Duplicate email"
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Invalid UUIDs in state/city/district — Negative, Data Validation, Boundary",
+      "endpoint": "/aggregator/create",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d900e",
+        "email_id": "Karwarpacs@gmail.com",
+        "mobile_number": "8567898767"
+      },
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": "Unprocessable Entity - Invalid UUIDs"
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Missing Authorization Header — Negative, Authentication & Authorization, Security",
+      "endpoint": "/aggregator/create",
+      "request_body": {},
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_response": "Unauthorized - Missing or invalid token"
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Request with expired token — Negative, Authentication & Authorization, Security",
+      "endpoint": "/aggregator/create",
+      "request_body": {},
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": "Unauthorized - Token expired"
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Request with malformed token — Negative, Authentication & Authorization, Security",
+      "endpoint": "/aggregator/create",
+      "request_body": {},
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": "Unauthorized - Malformed token"
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Request with invalid token — Negative, Authentication & Authorization, Security",
+      "endpoint": "/aggregator/create",
+      "request_body": {},
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_response": "Unauthorized - Invalid token"
+    },
+    {
+      "test_id": "TC-012",
+      "description": "Valid token provided — Positive, CRUD Operation",
+      "endpoint": "/aggregator/create",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "email_id": "Karwarpacs@gmail.com",
+        "mobile_number": "8567898767"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": "Success - Aggregator created"
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "expired": "your_expired_token_here",
+    "malformed": "malformed_token"
+  },
+  "test_cases": [
+    {
+      "tc_id": "TC-001",
+      "type": "Positive-CRUD",
+      "description": "Delete commodity using a valid commodity_master_id — Positive test, CRUD Operation",
+      "method": "DELETE",
+      "endpoint": "/commodity_master/delete_commodity/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "headers": { "Authorization": "Bearer iXd32fC8Dv" },
+      "expected_status": 200,
+      "expected_response": {
+        "status": 0,
+        "message": "Commodity deleted successfully",
+        "data": null
+      }
+    },
+    {
+      "tc_id": "TC-002",
+      "type": "Negative-Data Validation",
+      "description": "Attempt to delete a non-existing commodity_master_id — Negative test, Data Validation",
+      "method": "DELETE",
+      "endpoint": "/commodity_master/delete_commodity/bf7cbefe-dca3-470a-a509-f2343eb4f100",
+      "headers": { "Authorization": "Bearer iXd32fC8Dv" },
+      "expected_status": 404,
+      "expected_response": {
+        "detail": "Commodity not found"
+      }
+    },
+    {
+      "tc_id": "TC-003",
+      "type": "Negative-Data Validation",
+      "description": "Pass invalid UUID format for commodity_master_id — Negative, Data Validation, Boundary",
+      "method": "DELETE",
+      "endpoint": "/commodity_master/delete_commodity/123",
+      "headers": { "Authorization": "Bearer iXd32fC8Dv" },
+      "expected_status": 500,
+      "expected_response": {
+        "detail": [
+          {
+            "loc": ["path", "commodity_master_id"],
+            "msg": "Invalid UUID format",
+            "type": "value_error.uuid"
+          }
+        ]
+      }
+    },
+    {
+      "tc_id": "TC-004",
+      "type": "Negative-Authentication",
+      "description": "Call API without authentication token — Negative, Authentication & Authorization, Security",
+      "method": "DELETE",
+      "endpoint": "/commodity_master/delete_commodity/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Missing or invalid Authorization header"
+      }
+    },
+    {
+      "tc_id": "TC-005",
+      "type": "Negative-Authentication",
+      "description": "Call API with invalid token — Negative, Authentication & Authorization, Security",
+      "method": "DELETE",
+      "endpoint": "/commodity_master/delete_commodity/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "headers": { "Authorization": "Bearer iXd32fC8Di" },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Invalid token. Expected: iXd32fC8Dv, Got: iXd32fC8Di"
+      }
+    },
+    {
+      "tc_id": "TC-006",
+      "type": "Negative-Authentication",
+      "description": "Call API with expired token — Negative, Authentication & Authorization, Security",
+      "method": "DELETE",
+      "endpoint": "/commodity_master/delete_commodity/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "headers": { "Authorization": "Bearer your_expired_token_here" },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Unauthorized - Token expired"
+      }
+    },
+    {
+      "tc_id": "TC-007",
+      "type": "Negative-Authentication",
+      "description": "Call API with malformed token — Negative, Authentication & Authorization, Security",
+      "method": "DELETE",
+      "endpoint": "/commodity_master/delete_commodity/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "headers": { "Authorization": "Bearer malformed_token" },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Unauthorized - Malformed token"
+      }
+    },
+    {
+      "tc_id": "TC-008",
+      "type": "Negative-Authorization",
+      "description": "Call API with a role not permitted to delete commodity — Negative, Authorization, Security",
+      "method": "DELETE",
+      "endpoint": "/commodity_master/delete_commodity/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "headers": { "Authorization": "Bearer iXd32fC8Dv" },
+      "expected_status": 403,
+      "expected_response": {
+        "detail": "User role not permitted to delete this commodity"
+      }
+    }
+  ]
+}

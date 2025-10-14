@@ -1,0 +1,131 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "PUT",
+  "headers": { "Content-Type": "application/json" },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Dm",
+    "expired": "expiredTokenExample",
+    "malformed": "malformedTokenExample"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional - Positive",
+      "type": "Positive-CRUD-Integration",
+      "description": "Update branch with valid branch_id and valid data — ensures branch information is updated successfully",
+      "endpoint": "/branch/update_branch/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": 200,
+        "message": "Branch updated successfully",
+        "data": [{ "branch_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128" }],
+        "total_count": 1
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional - Negative",
+      "type": "Negative-Boundary-DataValidation",
+      "description": "Invalid branch_id format (not GUID) — tests input validation for branch_id format",
+      "endpoint": "/branch/update_branch/invalid-branch-id",
+      "expected_status": 400,
+      "expected_response": {
+        "status": "error",
+        "message": "Invalid branch ID format",
+        "data": [],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Functional - Negative",
+      "type": "Negative-Boundary-CRUD",
+      "description": "Branch_id does not exist — validates API returns 404 for non-existent branch",
+      "endpoint": "/branch/update_branch/bf7cbefe-dca3-470a-a509-f2343eb4f777",
+      "expected_status": 404,
+      "expected_response": {
+        "status": "error",
+        "message": "Branch with ID bf7cbefe-dca3-470a-a509-f2343eb4f777 not found",
+        "data": [],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-008",
+      "category": "Authentication - Positive",
+      "type": "Positive-Authentication",
+      "description": "Access with valid token — verifies API allows updates with correct authentication",
+      "endpoint": "/branch/update_branch/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": 200,
+        "message": "Branch updated successfully",
+        "data": [{ "branch_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128" }],
+        "total_count": 1
+      }
+    },
+    {
+      "test_id": "TC-009",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access without token — verifies API rejects request when Authorization header is missing",
+      "endpoint": "/branch/update_branch/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Authentication token is missing or invalid",
+        "data": [],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-010",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access with invalid token — validates API rejects requests with incorrect tokens",
+      "endpoint": "/branch/update_branch/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Authentication token is invalid",
+        "data": [],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-011",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access with expired token — validates API rejects requests using expired token",
+      "endpoint": "/branch/update_branch/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Token has expired",
+        "data": [],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-012",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access with malformed token — validates API rejects requests with malformed token format",
+      "endpoint": "/branch/update_branch/bf7cbefe-dca3-470a-a509-f2343eb4f128",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized access. Token format is invalid",
+        "data": [],
+        "total_count": 0
+      }
+    }
+  ]
+}

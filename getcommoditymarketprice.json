@@ -1,0 +1,90 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": { "Content-Type": "application/json" },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "expired": "expired_token_example",
+    "malformed": "malformed_token_example"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Fetch all commodity market prices without filters — Valid request, validates API returns all records, Data Validation, Integration",
+      "endpoint": "/commodity_market_price/get_all",
+      "query_params": {},
+      "expected_status": 200,
+      "auth_token": "valid"
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Fetch all MSP records only (is_msp=true) — Positive test for filtering MSP records, Data Validation, Integration",
+      "endpoint": "/commodity_market_price/get_all",
+      "query_params": { "is_msp": true },
+      "expected_status": 200,
+      "auth_token": "valid"
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Fetch all MAPP records only (is_msp=false) — Positive test for filtering MAPP records, Data Validation, Integration",
+      "endpoint": "/commodity_market_price/get_all",
+      "query_params": { "is_msp": false },
+      "expected_status": 200,
+      "auth_token": "valid"
+    },
+    {
+      "test_id": "TC-004",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Filter by specific commodity_master_id — Positive test for validating filtering by commodity ID, Data Validation, Integration",
+      "endpoint": "/commodity_market_price/get_all",
+      "query_params": { "commodity_master_id": "123e4567-e89b-12d3-a456-426614174000" },
+      "expected_status": 200,
+      "auth_token": "valid"
+    },
+    {
+      "test_id": "TC-005",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Filter by eligible_for = C (City level only) — Positive test for filtering by eligibility, Data Validation, Integration",
+      "endpoint": "/commodity_market_price/get_all",
+      "query_params": { "eligible_for": "C" },
+      "expected_status": 200,
+      "auth_token": "valid"
+    },
+    {
+      "test_id": "TC-006",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Unauthorized request (no token) — Negative test to verify API rejects missing Authorization header, Security, Authentication & Authorization",
+      "endpoint": "/commodity_market_price/get_all",
+      "expected_status": 401,
+      "auth_token": "empty"
+    },
+    {
+      "test_id": "TC-007",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Request with expired token — Negative test to verify API rejects expired token, Authentication & Authorization, Security",
+      "endpoint": "/commodity_market_price/get_all",
+      "expected_status": 401,
+      "auth_token": "expired"
+    },
+    {
+      "test_id": "TC-008",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Request with malformed token — Negative test to verify API rejects malformed token, Authentication & Authorization, Security",
+      "endpoint": "/commodity_market_price/get_all",
+      "expected_status": 401,
+      "auth_token": "malformed"
+    }
+  ]
+}

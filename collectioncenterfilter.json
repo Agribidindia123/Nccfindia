@@ -1,0 +1,141 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "expired": "your_expired_token_here",
+    "malformed": "invalid_token"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Filter by valid collection_center_name, village_name, state_master_id, and pagination — Positive, Data Validation, CRUD Operation",
+      "endpoint": "/collection_centers/filter",
+      "auth_token": "valid",
+      "request_body": {
+        "collection_center_name": "Updated Collection Point test",
+        "aggregator_id": "1675b75f-f165-432b-8c44-52ffdb4533e4",
+        "village_name": "Updated Village",
+        "city_master_id": "5d029541-2b08-4857-b8f2-1497fbda634c",
+        "sub_district_master_id": "66d39670-2e9f-4ad1-8a0f-ad9d30d66cc5",
+        "district_master_id": "c9082fec-4d95-4b81-9f35-2f4ae6cce2c9",
+        "state_master_id": "7b5fdba8-0cc7-483a-af94-822dbad33b90",
+        "collection_center_status": false,
+        "limit": 50,
+        "offset": 0
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Collection centers filtered successfully",
+        "total_count": 1
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Filter with only collection_center_name along with required filters — Positive, Data Validation",
+      "endpoint": "/collection_centers/filter",
+      "auth_token": "valid",
+      "request_body": {
+        "collection_center_name": "Updated Collection Point test",
+        "aggregator_id": "1675b75f-f165-432b-8c44-52ffdb4533e4",
+        "village_name": "",
+        "city_master_id": "5d029541-2b08-4857-b8f2-1497fbda634c",
+        "sub_district_master_id": "66d39670-2e9f-4ad1-8a0f-ad9d30d66cc5",
+        "district_master_id": "c9082fec-4d95-4b81-9f35-2f4ae6cce2c9",
+        "state_master_id": "7b5fdba8-0cc7-483a-af94-822dbad33b90",
+        "collection_center_status": false,
+        "limit": 50,
+        "offset": 0
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Collection centers filtered successfully",
+        "total_count": 1
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Filter returns zero records — Positive, Data Validation, Boundary",
+      "endpoint": "/collection_centers/filter",
+      "auth_token": "valid",
+      "request_body": {
+        "collection_center_name": "nonexistent-name",
+        "limit": 10,
+        "offset": 0
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Invalid UUID in aggregator_id — Negative, Data Validation",
+      "endpoint": "/collection_centers/filter",
+      "auth_token": "valid",
+      "request_body": {
+        "aggregator_id": "invalid-uuid"
+      },
+      "expected_status": 400
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Limit exceeds maximum allowed (e.g., 5000) — Negative, Boundary, Data Validation",
+      "endpoint": "/collection_centers/filter",
+      "auth_token": "valid",
+      "request_body": {
+        "limit": 5000
+      },
+      "expected_status": 400
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Offset is negative — Negative, Boundary, Data Validation",
+      "endpoint": "/collection_centers/filter",
+      "auth_token": "valid",
+      "request_body": {
+        "offset": -10
+      },
+      "expected_status": 400
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Request with expired token — Negative, Authentication & Authorization, Security",
+      "endpoint": "/collection_centers/filter",
+      "auth_token": "expired",
+      "request_body": {
+        "limit": 50,
+        "offset": 0
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Token expired",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Request with malformed token — Negative, Authentication & Authorization, Security",
+      "endpoint": "/collection_centers/filter",
+      "auth_token": "malformed",
+      "request_body": {
+        "limit": 50,
+        "offset": 0
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Malformed token",
+        "data": []
+      }
+    }
+  ]
+}

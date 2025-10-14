@@ -1,0 +1,96 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Dm",
+    "empty": "",
+    "expired": "expiredTokenExample",
+    "malformed": "malformedTokenExample"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC001",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Retrieve existing dispatch type by valid ID — Valid request, verifies successful fetch of specific dispatch type, Data Validation, Integration",
+      "method": "GET",
+      "endpoint": "/dispatch_type/get_dispatch_type/2a307364-085b-429e-b666-45a01819f086",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "request_body": {}
+    },
+    {
+      "test_id": "TC002",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-CRUD",
+      "description": "Non-existing dispatch type ID — Verifies API returns 404 when resource does not exist, Boundary/Negative testing",
+      "method": "GET",
+      "endpoint": "/dispatch_type/get_dispatch_type/00000000-0000-0000-0000-000000000000",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "valid",
+      "expected_status": 404,
+      "request_body": {}
+    },
+    {
+      "test_id": "TC003",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Missing Authorization Header — Verifies API rejects requests without token, Security, Authentication & Authorization",
+      "method": "GET",
+      "endpoint": "/dispatch_type/get_dispatch_type/123e4567-e89b-12d3-a456-426614174000",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "empty",
+      "expected_status": 401,
+      "request_body": {}
+    },
+    {
+      "test_id": "TC004",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access with invalid token — Verifies API rejects requests with invalid token, Security, Authentication & Authorization",
+      "method": "GET",
+      "endpoint": "/dispatch_type/get_dispatch_type/123e4567-e89b-12d3-a456-426614174000",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "request_body": {}
+    },
+    {
+      "test_id": "TC005",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access with expired token — Verifies API rejects requests with expired token, Security, Authentication & Authorization",
+      "method": "GET",
+      "endpoint": "/dispatch_type/get_dispatch_type/123e4567-e89b-12d3-a456-426614174000",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "expired",
+      "expected_status": 401,
+      "request_body": {}
+    },
+    {
+      "test_id": "TC006",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access with malformed token — Verifies API rejects requests with malformed token, Security, Authentication & Authorization",
+      "method": "GET",
+      "endpoint": "/dispatch_type/get_dispatch_type/123e4567-e89b-12d3-a456-426614174000",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "request_body": {}
+    }
+  ]
+}

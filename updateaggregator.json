@@ -1,0 +1,84 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "PUT",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Dm",
+    "expired": "expiredTokenExample",
+    "malformed": "malformedTokenExample"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional - Positive",
+      "type": "Positive-CRUD-Integration",
+      "description": "Update aggregator's personal details — Valid aggregator_id and token, ensures successful update of aggregator information",
+      "endpoint": "/aggregator/af5a57bd-891f-4479-9177-15efd66856c4",
+      "headers": {
+        "If-Match": "1"
+      },
+      "request_body": {
+        "aggregator_name": "Green Agri Co.",
+        "contact_person_name": "Ramesh Kumar"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": "Success - Aggregator details updated"
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional - Negative",
+      "type": "Negative-Boundary-CRUD",
+      "description": "Aggregator_id does not exist — Verifies API returns 404 for non-existent aggregator, Boundary and Negative testing",
+      "endpoint": "/aggregator/03bd05a0-0213-4864-8813-1ffdd25b5063",
+      "request_body": {
+        "aggregator_id": "03bd05a0-0213-4864-8813-1ffdd25b5063"
+      },
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_response": "Not Found - Aggregator ID does not exist"
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Invalid token — Verifies API rejects requests with invalid token, Security and Authorization testing",
+      "endpoint": "/aggregator/1055b75f-f165-432b-8c44-52ffdb4533e7",
+      "request_body": {
+        "aggregator_id": "1055b75f-f165-432b-8c44-52ffdb4533e7"
+      },
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_response": "Unauthorized - Invalid token"
+    },
+    {
+      "test_id": "TC-004",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Expired token — Verifies API rejects requests using an expired token, Security testing",
+      "endpoint": "/aggregator/1055b75f-f165-432b-8c44-52ffdb4533e7",
+      "request_body": {
+        "aggregator_id": "1055b75f-f165-432b-8c44-52ffdb4533e7"
+      },
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": "Unauthorized - Token has expired"
+    },
+    {
+      "test_id": "TC-005",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Malformed token — Verifies API rejects requests using a malformed token, Security testing",
+      "endpoint": "/aggregator/1055b75f-f165-432b-8c44-52ffdb4533e7",
+      "request_body": {
+        "aggregator_id": "1055b75f-f165-432b-8c44-52ffdb4533e7"
+      },
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": "Unauthorized - Token format is invalid"
+    }
+  ]
+}
