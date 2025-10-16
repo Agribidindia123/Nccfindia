@@ -1,0 +1,168 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Dm",
+    "empty": "",
+    "expired": "iXd32fC8Dx",
+    "malformed": "iXd32fC8D!",
+    "valid_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "default_procurement_details_id": "8c05815c-78d7-4c6f-8ee3-1c7f59ba1355",
+  "test_cases": [
+    {
+      "test_id": "TC_001",
+      "description": "Retrieve procurement details with valid ID",
+      "method": "GET",
+      "endpoint": "/procurement/details/{procurement_details_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": {
+        "procurement_details_id": "8c05815c-78d7-4c6f-8ee3-1c7f59ba1355"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "mandatory_fields": [
+          "procurement_details_id",
+          "quantity",
+          "weigh_bridge_slip_no",
+          "vehicle_number",
+          "weigh_bridge_slip_url",
+          "farmer_id",
+          "aggregator_id",
+          "collection_center_id",
+          "insert_date",
+          "status",
+          "commodity_master_id",
+          "gross_weight",
+          "tare_weight",
+          "lot_id",
+          "crop_year_id",
+          "added_by",
+          "driver_name",
+          "driver_mobile_no",
+          "rejected_weight",
+          "city_master_id",
+          "district_master_id",
+          "state_master_id",
+          "gunny_bag_weight",
+          "scheme_master_id"
+        ],
+        "field_types": {
+          "procurement_details_id": "string",
+          "quantity": "string",
+          "weigh_bridge_slip_no": "string",
+          "vehicle_number": "string",
+          "weigh_bridge_slip_url": "null|string",
+          "farmer_id": "string",
+          "aggregator_id": "string",
+          "collection_center_id": "string",
+          "insert_date": "string",
+          "status": "boolean",
+          "commodity_master_id": "float",
+          "gross_weight": "string",
+          "tare_weight": "string",
+          "lot_id": "string",
+          "crop_year_id": "string",
+          "added_by": "null|string",
+          "driver_name": "null|string",
+          "driver_mobile_no": "null|string",
+          "rejected_weight": "string",
+          "city_master_id": "string",
+          "district_master_id": "string",
+          "state_master_id": "string",
+          "gunny_bag_weight": "string",
+          "scheme_master_id": "string"
+        }
+      },
+      "performance": {
+        "max_response_time_ms": 500
+      }
+    },
+    {
+      "test_id": "TC_002",
+      "description": "Retrieve procurement details with non-existing ID",
+      "method": "GET",
+      "endpoint": "/procurement/details/{procurement_details_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": {
+        "procurement_details_id": "8c05815c-78d7-4c6f-8ee3-1c7f59ba1350"
+      },
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_error_message": "Procurement details not found"
+    },
+    {
+      "test_id": "TC_003",
+      "description": "Retrieve procurement details with invalid ID format",
+      "method": "GET",
+      "endpoint": "/procurement/details/{procurement_details_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": {
+        "procurement_details_id": "8c05815c-78d7-4c6f-8ee3-1c7f59ba135M"
+      },
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_error_message": "Failed to fetch procurement details: invalid input for query argument $1: '8c05815c-78d7-4c6f-8ee3-1c7f59ba135M' (invalid UUID '8c05815c-78d7-4c6f-8ee3-1c7f59ba135M': unexpected character 'M')"
+    },
+    {
+      "test_id": "TC_004",
+      "description": "Missing Authorization Header",
+      "method": "GET",
+      "endpoint": "/procurement/details/{procurement_details_id}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "path_params": {
+        "procurement_details_id": "8c05815c-78d7-4c6f-8ee3-1c7f59ba1355"
+      },
+      "auth_token": "",
+      "expected_status": 401,
+      "expected_error_message": "Authorization header missing"
+    },
+    {
+      "test_id": "TC_005",
+      "description": "Request with expired token",
+      "method": "GET",
+      "endpoint": "/procurement/details/{procurement_details_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": {
+        "procurement_details_id": "8c05815c-78d7-4c6f-8ee3-1c7f59ba1355"
+      },
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_error_message": "Token expired"
+    },
+    {
+      "test_id": "TC_006",
+      "description": "Request with malformed token",
+      "method": "GET",
+      "endpoint": "/procurement/details/{procurement_details_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": {
+        "procurement_details_id": "8c05815c-78d7-4c6f-8ee3-1c7f59ba1355"
+      },
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_error_message": "Malformed token"
+    }
+  ]
+}

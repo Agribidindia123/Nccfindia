@@ -1,0 +1,118 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "content_type": "application/json",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "expired": "expired_token_example",
+    "invalid": "invalid123",
+    "malformed": "malformed!@#token",
+    "empty": "",
+    "valid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "parameters": {
+    "nccf_branch_id": null,
+    "commodity_master_id": null,
+    "dispatch_type_id": null,
+    "crop_year_id": null
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_GET_DISPATCH_001",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "scenario": "Get dispatch destinations with valid token and optional parameters",
+      "test_type": "Positive",
+      "token": "valid",
+      "parameters": {
+        "nccf_branch_id": "6f74b544-a48b-4021-a468-d8d02a1f65dd",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128",
+        "dispatch_type_id": "8b2cc31d-00cd-4b50-88a8-f141581ba087",
+        "crop_year_id": "2025"
+      },
+      "expected_status_code": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Retrieved 7 dispatch destinations",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC_GET_DISPATCH_002",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "scenario": "Get dispatch destinations with expired token",
+      "test_type": "Negative - Expired Token",
+      "token": "expired",
+      "parameters": {},
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - token expired"
+    },
+    {
+      "test_id": "TC_GET_DISPATCH_003",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "scenario": "Get dispatch destinations with invalid token",
+      "test_type": "Negative - Invalid Token",
+      "token": "invalid",
+      "parameters": {},
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - invalid token"
+    },
+    {
+      "test_id": "TC_GET_DISPATCH_004",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "scenario": "Get dispatch destinations with malformed token",
+      "test_type": "Negative - Malformed Token",
+      "token": "malformed",
+      "parameters": {},
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - malformed token"
+    },
+    {
+      "test_id": "TC_GET_DISPATCH_005",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "scenario": "Get dispatch destinations with empty token",
+      "test_type": "Negative - Empty Token",
+      "token": "empty",
+      "parameters": {},
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - token missing"
+    },
+    {
+      "test_id": "TC_GET_DISPATCH_006",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "scenario": "Get dispatch destinations with invalid branch_id",
+      "test_type": "Negative - Invalid Parameter",
+      "token": "valid",
+      "parameters": {
+        "nccf_branch_id": "invalid-branch-id"
+      },
+      "expected_status_code": 400,
+      "expected_message": "Bad Request - invalid nccf_branch_id"
+    },
+    {
+      "test_id": "TC_GET_DISPATCH_007",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "scenario": "Get dispatch destinations with no data for given filters",
+      "test_type": "Positive - No Data",
+      "token": "valid",
+      "parameters": {
+        "nccf_branch_id": "00000000-0000-0000-0000-000000000000",
+        "commodity_master_id": "00000000-0000-0000-0000-000000000000"
+      },
+      "expected_status_code": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Retrieved 0 dispatch destinations",
+        "data": []
+      }
+    }
+  ]
+}

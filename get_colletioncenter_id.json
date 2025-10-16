@@ -1,0 +1,86 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "invalidToken123",
+    "empty": "",
+    "expired": "iXd32fC8Dx",
+    "malformed": "iXd32fC8D!",
+    "valid_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC001",
+      "description": "Functional - Positive: Valid collection_center_id with valid token",
+      "auth_token": "valid",
+      "endpoint": "/collection_center/{collection_center_id}",
+      "path_params": {
+        "collection_center_id": "5d86b70d-3d3a-453b-b2c3-d1a8295d5fe3"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC002",
+      "description": "Functional - Negative: Non-existing collection_center_id",
+      "auth_token": "valid",
+      "endpoint": "/collection_center/{collection_center_id}",
+      "path_params": {
+        "collection_center_id": "11111111-2222-3333-4444-555555555555"
+      },
+      "expected_status": 404
+    },
+    {
+      "test_id": "TC003",
+      "description": "Authorization - Negative: Missing auth token",
+      "auth_token": "empty",
+      "endpoint": "/collection_center/{collection_center_id}",
+      "path_params": {
+        "collection_center_id": "5d86b70d-3d3a-453b-b2c3-d1a8295d5fe3"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC004",
+      "description": "Authentication - Negative: Invalid auth token",
+      "auth_token": "invalid",
+      "endpoint": "/collection_center/{collection_center_id}",
+      "path_params": {
+        "collection_center_id": "5d86b70d-3d3a-453b-b2c3-d1a8295d5fe3"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC005",
+      "description": "Authentication - Negative: Expired auth token",
+      "auth_token": "expired",
+      "endpoint": "/collection_center/{collection_center_id}",
+      "path_params": {
+        "collection_center_id": "5d86b70d-3d3a-453b-b2c3-d1a8295d5fe3"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Token expired"
+      }
+    },
+    {
+      "test_id": "TC006",
+      "description": "Authentication - Negative: Malformed auth token",
+      "auth_token": "malformed",
+      "endpoint": "/collection_center/{collection_center_id}",
+      "path_params": {
+        "collection_center_id": "5d86b70d-3d3a-453b-b2c3-d1a8295d5fe3"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Malformed token"
+      }
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "content_type": "application/json",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "expired": "expired_token_example",
+    "invalid": "invalid123",
+    "malformed": "malformed!@#token",
+    "empty": "",
+    "valid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_GRLD_001",
+      "description": "Positive - Fetch land details requirement for valid commodity ID with valid token",
+      "category": "Positive | Functional | Authorization",
+      "method": "GET",
+      "endpoint": "/commodity_master/require_land_details/{commodity_master_id}",
+      "path_params": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": 200,
+        "message": "Land details requirement fetched"
+      }
+    },
+    {
+      "test_id": "TC_GRLD_002",
+      "description": "Negative - Missing Authorization token",
+      "category": "Negative | Authorization",
+      "method": "GET",
+      "endpoint": "/commodity_master/require_land_details/{commodity_master_id}",
+      "path_params": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_response": "Missing or invalid Authorization header"
+    },
+    {
+      "test_id": "TC_GRLD_003",
+      "description": "Negative - Invalid token used",
+      "category": "Negative | Security | Authentication",
+      "method": "GET",
+      "endpoint": "/commodity_master/require_land_details/{commodity_master_id}",
+      "path_params": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_response": "Invalid token"
+    },
+    {
+      "test_id": "TC_GRLD_004",
+      "description": "Negative - Expired token used",
+      "category": "Negative | Security | Authentication",
+      "method": "GET",
+      "endpoint": "/commodity_master/require_land_details/{commodity_master_id}",
+      "path_params": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": "Invalid token. Expected: iXd32fC8Dv, Got: expired_token_example"
+    },
+    {
+      "test_id": "TC_GRLD_005",
+      "description": "Negative - Malformed token (special characters) used",
+      "category": "Negative | Security | Data Validation",
+      "method": "GET",
+      "endpoint": "/commodity_master/require_land_details/{commodity_master_id}",
+      "path_params": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": "Invalid token. Expected: iXd32fC8Dv, Got: malformed!@#token"
+    },
+    {
+      "test_id": "TC_GRLD_007",
+      "description": "Negative - Non-existent commodity_master_id",
+      "category": "Negative | Functional | Data Validation",
+      "method": "GET",
+      "endpoint": "/commodity_master/require_land_details/{commodity_master_id}",
+      "path_params": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f100"
+      },
+      "auth_token": "valid",
+      "expected_status": 400,
+      "expected_response": "Commodity not found"
+    },
+    {
+      "test_id": "TC_GRLD_010",
+      "description": "Performance - Validate API response time under 2 seconds",
+      "category": "Performance | Benchmark",
+      "method": "GET",
+      "endpoint": "/commodity_master/require_land_details/{commodity_master_id}",
+      "path_params": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "message": "Land details requirement fetched"
+      },
+      "performance": {
+        "max_response_time_ms": 2000
+      }
+    }
+  ]
+}

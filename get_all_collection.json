@@ -1,0 +1,85 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "empty": "",
+    "expired": "iXd32fC8Dx",
+    "malformed": "iXd32fC8D!",
+    "valid_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Functional - Positive: Retrieve all collection centers (default pagination)",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/collection_center",
+      "query_params": {
+        "limit": 50,
+        "offset": 0
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Functional - Positive: Retrieve paginated list with custom limit and offset",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/collection_center",
+      "query_params": {
+        "limit": 10,
+        "offset": 5
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Security - Unauthorized request (missing/invalid token)",
+      "auth_token": null,
+      "method": "GET",
+      "endpoint": "/collection_center",
+      "query_params": {
+        "limit": 50,
+        "offset": 0
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Missing or invalid Authorization header"
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Security - Unauthorized request with expired token",
+      "auth_token": "expired",
+      "method": "GET",
+      "endpoint": "/collection_center",
+      "query_params": {
+        "limit": 50,
+        "offset": 0
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Token expired"
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Security - Unauthorized request with malformed token",
+      "auth_token": "malformed",
+      "method": "GET",
+      "endpoint": "/collection_center",
+      "query_params": {
+        "limit": 50,
+        "offset": 0
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Malformed token"
+      }
+    }
+  ]
+}

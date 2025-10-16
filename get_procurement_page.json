@@ -1,0 +1,126 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "content_type": "application/json",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "expired": "expired_token_example",
+    "invalid": "invalid123",
+    "malformed": "malformed!@#token",
+    "empty": "",
+    "valid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_GETPROC_001",
+      "endpoint": "/procurement/get_procurements/1",
+      "method": "GET",
+      "scenario": "Fetch procurements with valid token and valid page",
+      "test_type": "Positive",
+      "token": "valid",
+      "parameters": {},
+      "expected_status_code": 200,
+      "expected_message": "Successfully retrieved procurements"
+    },
+    {
+      "test_id": "TC_GETPROC_002",
+      "endpoint": "/procurement/get_procurements/1",
+      "method": "GET",
+      "scenario": "Fetch procurements with valid token and optional parameters",
+      "test_type": "Positive",
+      "token": "valid",
+      "parameters": {
+        "aggregator_id": "123",
+        "nccf_branch_id": "456",
+        "scheme_master_id": "24510e0d-bb16-4a3e-8f81-a4230d848415",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128",
+        "crop_year_id": "78827df4-94b1-4034-93f6-ee5be6dc5080",
+        "farmer_id": "00036e33-b261-4e8b-92ed-9aaaad4f7caa"
+      },
+      "expected_status_code": 200,
+      "expected_message": "Successfully retrieved procurements with filters"
+    },
+    {
+      "test_id": "TC_GETPROC_003",
+      "endpoint": "/procurement/get_procurements/1",
+      "method": "GET",
+      "scenario": "Fetch procurements with expired token",
+      "test_type": "Negative - Expired Token",
+      "token": "expired",
+      "parameters": {},
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - token expired"
+    },
+    {
+      "test_id": "TC_GETPROC_004",
+      "endpoint": "/procurement/get_procurements/1",
+      "method": "GET",
+      "scenario": "Fetch procurements with invalid token",
+      "test_type": "Negative - Invalid Token",
+      "token": "invalid",
+      "parameters": {},
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - invalid token"
+    },
+    {
+      "test_id": "TC_GETPROC_005",
+      "endpoint": "/procurement/get_procurements/1",
+      "method": "GET",
+      "scenario": "Fetch procurements with malformed token",
+      "test_type": "Negative - Malformed Token",
+      "token": "malformed",
+      "parameters": {},
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - malformed token"
+    },
+    {
+      "test_id": "TC_GETPROC_006",
+      "endpoint": "/procurement/get_procurements/1",
+      "method": "GET",
+      "scenario": "Fetch procurements with empty token",
+      "test_type": "Negative - Empty Token",
+      "token": "empty",
+      "parameters": {},
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - token missing"
+    },
+    {
+      "test_id": "TC_GETPROC_007",
+      "endpoint": "/procurement/get_procurements/",
+      "method": "GET",
+      "scenario": "Fetch procurements with missing required page",
+      "test_type": "Negative - Missing Required Parameter",
+      "token": "valid",
+      "parameters": {},
+      "expected_status_code": 400,
+      "expected_message": "Bad Request - missing required page"
+    },
+    {
+      "test_id": "TC_GETPROC_008",
+      "endpoint": "/procurement/get_procurements/-1",
+      "method": "GET",
+      "scenario": "Fetch procurements with invalid page number",
+      "test_type": "Negative - Invalid Page",
+      "token": "valid",
+      "parameters": {},
+      "expected_status_code": 400,
+      "expected_message": "Bad Request - invalid page"
+    },
+    {
+      "test_id": "TC_GETPROC_009",
+      "endpoint": "/procurement/get_procurements/1",
+      "method": "GET",
+      "scenario": "Fetch procurements with malformed request parameters",
+      "test_type": "Negative - Malformed Request",
+      "token": "valid",
+      "parameters": {
+        "aggregator_id": "!@#$%",
+        "nccf_branch_id": "abc123"
+      },
+      "expected_status_code": 400,
+      "expected_message": "Bad Request - malformed parameters"
+    }
+  ]
+}

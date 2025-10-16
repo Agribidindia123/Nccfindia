@@ -1,0 +1,147 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "empty": "",
+    "expired": "iXd32fC8Dx",
+    "malformed": "iXd32fC8D!",
+    "valid_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_001",
+      "category": "Functional-Positive",
+      "description": "Positive - CRUD Read & Integration: Get all crop years by valid commodity_master_id without filters",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/a836438f-092d-424b-a360-682430c45b0e",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_002",
+      "category": "Functional-Positive",
+      "description": "Positive - Data Validation & Integration: Filter crop years by valid scheme_master_id",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/a836438f-092d-424b-a360-682430c45b0e",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {
+        "scheme_master_id": "b4a9e649-ae94-4432-b4a3-07cf511a2ffa"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_003",
+      "category": "Functional-Positive",
+      "description": "Positive - Data Validation & Integration: Filter crop years by valid commodity_main_season_master_id",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/a836438f-092d-424b-a360-682430c45b0e",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {
+        "commodity_main_season_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_004",
+      "category": "Functional-Positive",
+      "description": "Positive - Data Validation & Integration: Filter crop years by crop_year_name",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/a836438f-092d-424b-a360-682430c45b0e",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {
+        "crop_year_name": "2023-24"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_005",
+      "category": "Functional-Positive",
+      "description": "Positive - Data Validation & Integration: Filter crop years by is_active=true",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/a836438f-092d-424b-a360-682430c45b0e",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {
+        "is_active": "true"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_006",
+      "category": "Functional-Positive",
+      "description": "Positive - Data Validation & Integration: Apply multiple filters together (scheme_master_id + is_active)",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/a836438f-092d-424b-a360-682430c45b0e",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {
+        "scheme_master_id": "b4a9e649-ae94-4432-b4a3-07cf511a2ffa",
+        "is_active": "true"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_007",
+      "category": "Validation-Negative",
+      "description": "Negative - Data Validation: Invalid commodity_master_id (non-UUID format)",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/invalid-id",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC_008",
+      "category": "Validation-Negative",
+      "description": "Negative - Data Validation: Invalid scheme_master_id (non-UUID format)",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/a836438f-092d-424b-a360-682430c45b0e",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {
+        "scheme_master_id": "123-gdh-673"
+      },
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC_009",
+      "category": "Authentication-Negative",
+      "description": "Negative - Authentication & Authorization: Request with expired token (Security & Boundary Test)",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/a836438f-092d-424b-a360-682430c45b0e",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "expired",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_010",
+      "category": "Authentication-Negative",
+      "description": "Negative - Authentication & Authorization: Request with malformed token (Security & Boundary Test)",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years/a836438f-092d-424b-a360-682430c45b0e",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "malformed",
+      "expected_status": 401
+    }
+  ]
+}

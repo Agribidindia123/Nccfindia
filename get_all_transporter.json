@@ -1,0 +1,98 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Dm",
+    "empty": "",
+    "valid_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC001",
+      "description": "Retrieve all transport services without any filters",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/transport_service/get_transport_services",
+      "query_params": {},
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC002",
+      "description": "Filter by status = 1 (Active)",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/transport_service/get_transport_services",
+      "query_params": {
+        "status": 1
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC003",
+      "description": "Filter by status = 0 (Inactive)",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/transport_service/get_transport_services",
+      "query_params": {
+        "status": 0
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC004",
+      "description": "Filter by city_master_id",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/transport_service/get_transport_services",
+      "query_params": {
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC005",
+      "description": "Filter by district_master_id",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/transport_service/get_transport_services",
+      "query_params": {
+        "district_master_id": "abe73aa6-4d21-4c3c-bcca-51e5a374e1a4"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC006",
+      "description": "Filter by state_master_id",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/transport_service/get_transport_services",
+      "query_params": {
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC007",
+      "description": "Filter by partial transport_service_name",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/transport_service/get_transport_services",
+      "query_params": {
+        "transport_service_name": "ABC"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC008",
+      "description": "Use a valid filter that returns no records",
+      "auth_token": "valid",
+      "method": "GET",
+      "endpoint": "/transport_service/get_transport_services",
+      "query_params": {
+        "transport_service_name": "NoMatch"
+      },
+      "expected_status": 404
+    }
+  ]
+}

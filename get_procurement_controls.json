@@ -1,0 +1,132 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "content_type": "application/json",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "expired": "expired_token_example",
+    "invalid": "invalid123",
+    "malformed": "malformed!@#token",
+    "empty": "",
+    "valid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_GETCTRL_001",
+      "endpoint": "/procurement_controls/get_procurement_controls",
+      "method": "GET",
+      "scenario": "Fetch procurement controls with valid token and required parameters",
+      "test_type": "Positive",
+      "token": "valid",
+      "parameters": {
+        "crop_year_id": "78827df4-94b1-4034-93f6-ee5be6dc5080",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "expected_status_code": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Retrieved 0 controls",
+        "data": [],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC_GETCTRL_002",
+      "endpoint": "/procurement_controls/get_procurement_controls",
+      "method": "GET",
+      "scenario": "Fetch procurement controls with expired token",
+      "test_type": "Negative - Expired Token",
+      "token": "expired",
+      "parameters": {
+        "crop_year_id": "78827df4-94b1-4034-93f6-ee5be6dc5080",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - token expired"
+    },
+    {
+      "test_id": "TC_GETCTRL_003",
+      "endpoint": "/procurement_controls/get_procurement_controls",
+      "method": "GET",
+      "scenario": "Fetch procurement controls with invalid token",
+      "test_type": "Negative - Invalid Token",
+      "token": "invalid",
+      "parameters": {
+        "crop_year_id": "78827df4-94b1-4034-93f6-ee5be6dc5080",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - invalid token"
+    },
+    {
+      "test_id": "TC_GETCTRL_004",
+      "endpoint": "/procurement_controls/get_procurement_controls",
+      "method": "GET",
+      "scenario": "Fetch procurement controls with malformed token",
+      "test_type": "Negative - Malformed Token",
+      "token": "malformed",
+      "parameters": {
+        "crop_year_id": "78827df4-94b1-4034-93f6-ee5be6dc5080",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - malformed token"
+    },
+    {
+      "test_id": "TC_GETCTRL_005",
+      "endpoint": "/procurement_controls/get_procurement_controls",
+      "method": "GET",
+      "scenario": "Fetch procurement controls with empty token",
+      "test_type": "Negative - Empty Token",
+      "token": "empty",
+      "parameters": {
+        "crop_year_id": "78827df4-94b1-4034-93f6-ee5be6dc5080",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "expected_status_code": 401,
+      "expected_message": "Unauthorized - token missing"
+    },
+    {
+      "test_id": "TC_GETCTRL_006",
+      "endpoint": "/procurement_controls/get_procurement_controls",
+      "method": "GET",
+      "scenario": "Fetch procurement controls with missing required crop_year_id",
+      "test_type": "Negative - Missing Required Parameter",
+      "token": "valid",
+      "parameters": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "expected_status_code": 400,
+      "expected_message": "Bad Request - missing crop_year_id"
+    },
+    {
+      "test_id": "TC_GETCTRL_007",
+      "endpoint": "/procurement_controls/get_procurement_controls",
+      "method": "GET",
+      "scenario": "Fetch procurement controls with missing required commodity_master_id",
+      "test_type": "Negative - Missing Required Parameter",
+      "token": "valid",
+      "parameters": {
+        "crop_year_id": "78827df4-94b1-4034-93f6-ee5be6dc5080"
+      },
+      "expected_status_code": 400,
+      "expected_message": "Bad Request - missing commodity_master_id"
+    },
+    {
+      "test_id": "TC_GETCTRL_008",
+      "endpoint": "/procurement_controls/get_procurement_controls",
+      "method": "GET",
+      "scenario": "Fetch procurement controls with malformed request parameters",
+      "test_type": "Negative - Malformed Request",
+      "token": "valid",
+      "parameters": {
+        "crop_year_id": "!@#$$%",
+        "commodity_master_id": "invalid-uuid"
+      },
+      "expected_status_code": 400,
+      "expected_message": "Bad Request - malformed parameters"
+    }
+  ]
+}

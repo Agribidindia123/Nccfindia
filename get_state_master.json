@@ -1,0 +1,96 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "badtoken123",
+    "expired": "expired_token_example",
+    "malformed": "1234@@invalid..token",
+    "valid_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "S-001",
+      "description": "Positive - Get all states with valid token",
+      "category": "Positive / Data Validation",
+      "endpoint": "/master/get_state_master",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": [
+        "Successfully",
+        {
+          "mandatory_fields": [
+            "status",
+            "message",
+            "data",
+            "total_count"
+          ],
+          "field_types": {
+            "status": "string",
+            "message": "string"
+          }
+        }
+      ]
+    },
+    {
+      "test_id": "S-002",
+      "description": "Negative - Missing Authorization header",
+      "category": "Negative / Authentication",
+      "endpoint": "/master/get_state_master",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_response": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "S-003",
+      "description": "Negative - Invalid token",
+      "category": "Negative / Authentication",
+      "endpoint": "/master/get_state_master",
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_response": "Invalid token"
+    },
+    {
+      "test_id": "S-004",
+      "description": "Performance - Ensure API responds within 1s",
+      "category": "Performance",
+      "endpoint": "/master/get_state_master",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "performance": {
+        "max_response_time_ms": 1000
+      },
+      "expected_response": "Successfully"
+    },
+    {
+      "test_id": "S-005",
+      "description": "Negative - Expired token should not allow access",
+      "category": "Negative / Authentication / Expiry",
+      "endpoint": "/master/get_state_master",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": [
+        "Invalid token",
+        "Invalid token. Expected"
+      ]
+    },
+    {
+      "test_id": "S-006",
+      "description": "Negative - Malformed token (invalid structure or signature)",
+      "category": "Negative / Security / Token Validation",
+      "endpoint": "/master/get_state_master",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": [
+        "Invalid token",
+        "Invalid token. Expected"
+      ]
+    }
+  ]
+}

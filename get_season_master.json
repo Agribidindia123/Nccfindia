@@ -1,0 +1,90 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "iXd32fC8Di",
+    "expired": "iXd32fC8Dx",
+    "malformed": "iXd32fC8D!",
+    "valid_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Functional & Integration: Retrieve all season masters with valid request and valid token",
+      "method": "GET",
+      "endpoint": "/commodity_master/get_season_master",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "valid",
+      "request_body": null,
+      "expected_status": 200,
+      "expected_response": {
+        "status": 200
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Negative - Authentication & Authorization: Retrieve season masters without authentication token",
+      "method": "GET",
+      "endpoint": "/commodity_master/get_season_master",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "empty",
+      "request_body": null,
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Missing or invalid Authorization header"
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Negative - Authentication & Authorization: Retrieve season masters with invalid token",
+      "method": "GET",
+      "endpoint": "/commodity_master/get_season_master",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "invalid",
+      "request_body": null,
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Invalid token. Expected: iXd32fC8Dv, Got: iXd32fC8Di"
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Negative - Authentication & Authorization (Boundary Test): Retrieve season masters with expired token",
+      "method": "GET",
+      "endpoint": "/commodity_master/get_season_master",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "expired",
+      "request_body": null,
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Token expired"
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Authentication & Authorization (Boundary Test): Retrieve season masters with malformed token",
+      "method": "GET",
+      "endpoint": "/commodity_master/get_season_master",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "malformed",
+      "request_body": null,
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Malformed token"
+      }
+    }
+  ]
+}

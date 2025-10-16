@@ -1,0 +1,201 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "invalid": "invalid123",
+    "expired": "expired_token_example",
+    "malformed": "malformed@@token",
+    "empty": "",
+    "valid_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "B-001",
+      "description": "Positive - Fetch all branches with valid token and no filters",
+      "category": "Positive / Data Validation",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {},
+      "expected_status": 200,
+      "expected_response": [
+        "Successfully",
+        "data",
+        "total_count"
+      ]
+    },
+    {
+      "test_id": "B-002",
+      "description": "Positive - Filter branches by valid name",
+      "category": "Positive / Filter Validation",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {
+        "name": "Delhi"
+      },
+      "expected_status": 200,
+      "expected_response": [
+        "Delhi",
+        "branch_name"
+      ]
+    },
+    {
+      "test_id": "B-003",
+      "description": "Positive - Filter branches by state name",
+      "category": "Positive / Filter Validation",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {
+        "state": "Maharashtra"
+      },
+      "expected_status": 200,
+      "expected_response": [
+        "Maharashtra",
+        "state_name"
+      ]
+    },
+    {
+      "test_id": "B-004",
+      "description": "Positive - Filter branches by district and city",
+      "category": "Positive / Filter Validation",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {
+        "district": "Ahmedabad",
+        "city": "Sanand"
+      },
+      "expected_status": 200,
+      "expected_response": [
+        "Ahmedabad",
+        "Sanand"
+      ]
+    },
+    {
+      "test_id": "B-005",
+      "description": "Negative - Invalid state name in filter",
+      "category": "Negative / Data Validation",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {
+        "state": "InvalidState123"
+      },
+      "expected_status": 404,
+      "expected_response": "No records found"
+    },
+    {
+      "test_id": "B-006",
+      "description": "Negative - Special characters in name filter",
+      "category": "Negative / Input Validation",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {
+        "name": "@@@###"
+      },
+      "expected_status": 400,
+      "expected_response": "Invalid filter parameter"
+    },
+    {
+      "test_id": "B-007",
+      "description": "Negative - Missing Authorization header",
+      "category": "Negative / Authentication",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "empty",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_response": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "B-008",
+      "description": "Negative - Invalid Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "invalid",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_response": "Invalid token"
+    },
+    {
+      "test_id": "B-009",
+      "description": "Negative - Expired Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "expired",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_response": "Token expired"
+    },
+    {
+      "test_id": "B-010",
+      "description": "Negative - Malformed Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "malformed",
+      "query_params": {},
+      "expected_status": 400,
+      "expected_response": "Malformed token"
+    },
+    {
+      "test_id": "B-011",
+      "description": "Boundary - Extremely long branch name filter (500 chars)",
+      "category": "Boundary / Input Validation",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {
+        "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "expected_status": 400,
+      "expected_response": "Invalid input length"
+    },
+    {
+      "test_id": "B-012",
+      "description": "Boundary - Boolean is_active filter true",
+      "category": "Boundary / Data Validation",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {
+        "is_active": true
+      },
+      "expected_status": 200,
+      "expected_response": [
+        "status",
+        "data"
+      ]
+    },
+    {
+      "test_id": "B-013",
+      "description": "Boundary - Boolean is_active filter false",
+      "category": "Boundary / Data Validation",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {
+        "is_active": false
+      },
+      "expected_status": 200,
+      "expected_response": [
+        "data"
+      ]
+    },
+    {
+      "test_id": "B-014",
+      "description": "Performance - Ensure API responds within 1s",
+      "category": "Performance / Response Time",
+      "endpoint": "/branch/get_all_branches",
+      "auth_token": "valid",
+      "query_params": {},
+      "expected_status": 200,
+      "performance": {
+        "max_response_time_ms": 1000
+      },
+      "expected_response": [
+        "Successfully"
+      ]
+    }
+  ]
+}

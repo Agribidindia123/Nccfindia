@@ -1,0 +1,229 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "endpoint": "/procurement/get_procurements",
+  "method": "GET",
+  "content_type": "application/json",
+  "tokens": {
+    "valid": "iXd32fC8Dv",
+    "expired": "expiredToken123",
+    "invalid": "invalidToken456",
+    "empty": "",
+    "valid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_GET_PROC_001",
+      "description": "Fetch all procurements without filters using valid token",
+      "test_type": "Positive - Functional",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {},
+      "expected_status_code": 200,
+      "expected_result": "Successfully retrieves all procurements with pagination details"
+    },
+    {
+      "test_id": "TC_GET_PROC_002",
+      "description": "Fetch procurements by valid aggregator_id",
+      "test_type": "Positive - Data Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "aggregator_id": "1a2b3c4d-5e6f-7a8b-9c0d-1234567890ab"
+      },
+      "expected_status_code": 200,
+      "expected_result": "Returns procurements filtered by aggregator_id"
+    },
+    {
+      "test_id": "TC_GET_PROC_003",
+      "description": "Fetch procurements by valid nccf_branch_id",
+      "test_type": "Positive - Data Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "nccf_branch_id": "19326db4-cfbc-461e-a57e-2a2498e7940d"
+      },
+      "expected_status_code": 200,
+      "expected_result": "Returns procurements filtered by branch"
+    },
+    {
+      "test_id": "TC_GET_PROC_004",
+      "description": "Fetch procurements by valid scheme_master_id and commodity_master_id",
+      "test_type": "Positive - Integration",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "scheme_master_id": "24510e0d-bb16-4a3e-8f81-a4230d848415",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "expected_status_code": 200,
+      "expected_result": "Returns procurements filtered by scheme and commodity"
+    },
+    {
+      "test_id": "TC_GET_PROC_005",
+      "description": "Fetch procurements by valid farmer_id",
+      "test_type": "Positive - Data Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "farmer_id": "00036e33-b261-4e8b-92ed-9aaaad4f7caa"
+      },
+      "expected_status_code": 200,
+      "expected_result": "Returns procurements for given farmer"
+    },
+    {
+      "test_id": "TC_GET_PROC_006",
+      "description": "Fetch procurements - pagination test (page 2)",
+      "test_type": "Positive - Pagination",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "page": 2
+      },
+      "expected_status_code": 200,
+      "expected_result": "Returns next page of procurements with pagination meta info"
+    },
+    {
+      "test_id": "TC_GET_PROC_007",
+      "description": "Fetch procurements with invalid aggregator_id format",
+      "test_type": "Negative - Malformed Input",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "aggregator_id": "@@@INVALID###"
+      },
+      "expected_status_code": 400,
+      "expected_result": "Returns validation error for invalid aggregator_id format"
+    },
+    {
+      "test_id": "TC_GET_PROC_008",
+      "description": "Fetch procurements with non-existent but valid UUID",
+      "test_type": "Negative - Data Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "scheme_master_id": "00000000-0000-0000-0000-000000000000"
+      },
+      "expected_status_code": 200,
+      "expected_result": "No records found, returns empty data array"
+    },
+    {
+      "test_id": "TC_GET_PROC_009",
+      "description": "Fetch procurements with malformed query string",
+      "test_type": "Negative - Malformed Request",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "invalid_param": "??invalid_query"
+      },
+      "expected_status_code": 400,
+      "expected_result": "Malformed request syntax or bad query parameters"
+    },
+    {
+      "test_id": "TC_GET_PROC_010",
+      "description": "Fetch procurements with expired token",
+      "test_type": "Negative - Authentication",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {},
+      "auth_token": "expired",
+      "expected_status_code": 401,
+      "expected_result": "Unauthorized - token expired"
+    },
+    {
+      "test_id": "TC_GET_PROC_011",
+      "description": "Fetch procurements with invalid token",
+      "test_type": "Negative - Authentication",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {},
+      "auth_token": "invalid",
+      "expected_status_code": 401,
+      "expected_result": "Unauthorized - invalid token"
+    },
+    {
+      "test_id": "TC_GET_PROC_012",
+      "description": "Fetch procurements with missing token",
+      "test_type": "Negative - Authentication",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {},
+      "auth_token": "empty",
+      "expected_status_code": 401,
+      "expected_result": "Unauthorized - missing authentication header"
+    },
+    {
+      "test_id": "TC_GET_PROC_013",
+      "description": "Fetch procurements with invalid content-type header",
+      "test_type": "Negative - Header Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "text/plain"
+      },
+      "expected_status_code": 415,
+      "expected_result": "Unsupported Media Type"
+    },
+    {
+      "test_id": "TC_GET_PROC_014",
+      "description": "Fetch procurements with SQL injection attempt",
+      "test_type": "Negative - Security",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "aggregator_id": "1a2b3c4d'; DROP TABLE procurements; --"
+      },
+      "expected_status_code": 400,
+      "expected_result": "Rejected due to invalid or unsafe input"
+    },
+    {
+      "test_id": "TC_GET_PROC_015",
+      "description": "Fetch procurements with extremely long parameter value (boundary test)",
+      "test_type": "Boundary - Input Length",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "scheme_master_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expected_status_code": 400,
+      "expected_result": "Validation error due to excessive parameter length"
+    },
+    {
+      "test_id": "TC_GET_PROC_016",
+      "description": "Fetch procurements with very large page number",
+      "test_type": "Boundary - Pagination Limit",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "page": 9999
+      },
+      "expected_status_code": 200,
+      "expected_result": "No data found, returns empty result with valid pagination info"
+    },
+    {
+      "test_id": "TC_GET_PROC_017",
+      "description": "Fetch procurements with invalid page number (negative)",
+      "test_type": "Negative - Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "page": -5
+      },
+      "expected_status_code": 400,
+      "expected_result": "Page parameter must be positive integer"
+    },
+    {
+      "test_id": "TC_GET_PROC_018",
+      "description": "Performance test - measure response time for 200 records",
+      "test_type": "Performance",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "parameters": {
+        "page_size": 200
+      },
+      "expected_status_code": 200,
+      "expected_result": "Response time within acceptable performance threshold (\u2264 2s)"
+    }
+  ]
+}
