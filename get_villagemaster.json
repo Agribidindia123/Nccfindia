@@ -5,21 +5,28 @@
     "Content-Type": "application/json"
   },
   "tokens": {
-    "valid": "iXd32fC8Dv",
+    "valid": "<fetched_from_login_api>",
     "invalid": "iXd32fC8Di",
     "expired": "iXd32fC8Dx",
     "malformed": "iXd32fC8D!",
-    "valid_id": "<replace_with_id_token_here>",
+    "valid_id": "<fetched_from_login_api>",
     "invalid_id": "<replace_with_id_token_here>",
     "expired_id": "<replace_with_id_token_here>",
-    "malformed_id": "<replace_with_id_token_here>"
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
   },
   "test_cases": [
     {
       "test_id": "TC_001",
       "description": "Retrieve village master list using a valid subdistrict_id; validates successful data retrieval and correct response structure",
       "category": "Functional-Positive - Data Validation",
-      "endpoint": "/master/get_village_master_by_subdistrict_id/0672f9a7-6d33-477a-82c6-497cc144df44",
+      "endpoint": "/master/get_village_master_by_subdistrict_id/{subdistrict_id}",
       "method": "GET",
       "path_params": {
         "subdistrict_id": "0672f9a7-6d33-477a-82c6-497cc144df44"
@@ -32,7 +39,7 @@
       "test_id": "TC_002",
       "description": "Unauthorized access without authentication token; validates API rejects requests missing token",
       "category": "Authentication-Negative - Security",
-      "endpoint": "/master/get_village_master_by_subdistrict_id/0672f9a7-6d33-477a-82c6-497cc144df44",
+      "endpoint": "/master/get_village_master_by_subdistrict_id/{subdistrict_id}",
       "method": "GET",
       "path_params": {
         "subdistrict_id": "0672f9a7-6d33-477a-82c6-497cc144df44"
@@ -45,7 +52,7 @@
       "test_id": "TC_003",
       "description": "Unauthorized access with invalid authentication token; validates API rejects requests with incorrect token",
       "category": "Authentication-Negative - Security",
-      "endpoint": "/master/get_village_master_by_subdistrict_id/123e4567-e89b-12d3-a456-426614174000",
+      "endpoint": "/master/get_village_master_by_subdistrict_id/{subdistrict_id}",
       "method": "GET",
       "path_params": {
         "subdistrict_id": "123e4567-e89b-12d3-a456-426614174000"
@@ -58,7 +65,7 @@
       "test_id": "TC_004",
       "description": "Unauthorized access with expired authentication token; validates API rejects requests with expired token",
       "category": "Authentication-Negative - Security",
-      "endpoint": "/master/get_village_master_by_subdistrict_id/123e4567-e89b-12d3-a456-426614174000",
+      "endpoint": "/master/get_village_master_by_subdistrict_id/{subdistrict_id}",
       "method": "GET",
       "path_params": {
         "subdistrict_id": "123e4567-e89b-12d3-a456-426614174000"
@@ -71,7 +78,7 @@
       "test_id": "TC_005",
       "description": "Unauthorized access with malformed authentication token; validates API rejects requests with malformed token",
       "category": "Authentication-Negative - Security",
-      "endpoint": "/master/get_village_master_by_subdistrict_id/123e4567-e89b-12d3-a456-426614174000",
+      "endpoint": "/master/get_village_master_by_subdistrict_id/{subdistrict_id}",
       "method": "GET",
       "path_params": {
         "subdistrict_id": "123e4567-e89b-12d3-a456-426614174000"
@@ -79,6 +86,60 @@
       "query_params": {},
       "auth_token": "malformed",
       "expected_status": 401
+    },
+    {
+      "test_id": "TC_006",
+      "description": "Admin user successfully retrieves village master data",
+      "category": "Role-based Access - Positive",
+      "endpoint": "/master/get_village_master_by_subdistrict_id/{subdistrict_id}",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": {
+        "subdistrict_id": "0672f9a7-6d33-477a-82c6-497cc144df44"
+      },
+      "auth_token": "valid_admin",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_007",
+      "description": "Aggregator successfully retrieves all villages",
+      "category": "Role-based Access - Negative",
+      "endpoint": "/master/get_village_master_by_subdistrict_id/{subdistrict_id}",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": {
+        "subdistrict_id": "0672f9a7-6d33-477a-82c6-497cc144df44"
+      },
+      "auth_token": "valid_aggregator",
+      "expected_status": 200,
+      "expected_response": {
+        "detail": "Access granted"
+      }
+    },
+    {
+      "test_id": "TC_008",
+      "description": "Branch successfully retrieves all villages",
+      "category": "Role-based Access - Negative",
+      "endpoint": "/master/get_village_master_by_subdistrict_id/{subdistrict_id}",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": {
+        "subdistrict_id": "0672f9a7-6d33-477a-82c6-497cc144df44"
+      },
+      "auth_token": "valid_branch",
+      "expected_status": 200,
+      "expected_response": {
+        "detail": "Access granted"
+      }
     }
   ]
 }
