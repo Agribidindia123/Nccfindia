@@ -15,7 +15,7 @@ import sys
 # ================================================================
 # Configuration
 # ================================================================
-BASE_DIR = Path("C:/Users/ADMIN/PyCharmMiscProject")
+BASE_DIR = Path(__file__).resolve().parent.parent
 JSON_DIR = BASE_DIR / "Json_data" / "Final_json_100"
 REPORTS_DIR = BASE_DIR / "reports"
 REPORTS_DIR.mkdir(parents=True, exist_ok=True)
