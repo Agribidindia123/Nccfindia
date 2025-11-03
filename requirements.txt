@@ -1,3 +1,4 @@
 pytest
 pytest-html
+pytest-json-report
 requests

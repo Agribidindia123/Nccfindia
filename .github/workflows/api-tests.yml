@@ -2,25 +2,32 @@ name: API Tests
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
       - name: Run API Tests
         run: |
-          pytest all_api_json.py --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json
+          pytest tests/ --html=reports/report.html --self-contained-html \
+                         --json-report --json-report-file=reports/report.json
+
       - name: Upload Reports
         uses: actions/upload-artifact@v4
         with:
