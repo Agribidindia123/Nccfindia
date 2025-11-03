@@ -1,0 +1,149 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Di",
+    "expired": "expiredTokenExample",
+    "malformed": "malformedTokenExample",
+    "empty": "",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Retrieve existing aggregator by valid aggregator_id — Verifies successful fetch of specific aggregator record",
+      "endpoint": "/aggregator/id/ef7b9b4f-8815-4583-9658-953478d28709",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": 200
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional - Negative",
+      "type": "Negative-Boundary-CRUD",
+      "description": "Retrieve aggregator by non-existing aggregator_id — Verifies API returns 404 when record not found",
+      "endpoint": "/aggregator/id/11111111-2222-3333-4444-555555555555",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_response": {
+        "detail": "Aggregator with ID 11111111-2222-3333-4444-555555555555 not found"
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Missing Authorization Header — Verifies API rejects requests without auth token",
+      "endpoint": "/aggregator/id/5d8a2b37-fb60-4aef-b8d7-32e37207a822",
+      "method": "GET",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Missing or invalid Authorization header"
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "category": "Functional - Positive",
+      "type": "Positive-DataValidation-Integration",
+      "description": "Validate data structure with valid token — Ensures API returns expected aggregator details and structure",
+      "endpoint": "/aggregator/id/ef7b9b4f-8815-4583-9658-953478d28709",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "schema_validation": "pass"
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Request with invalid token — Verifies API rejects incorrect token",
+      "endpoint": "/aggregator/id/5d8a2b37-fb60-4aef-b8d7-32e37207a822",
+      "method": "GET",
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Invalid token. Expected: iXd32fC8Dv, Got: iXd32fC8Di"
+      }
+    },
+    {
+      "test_id": "TC-006",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Request with expired token — Verifies API rejects expired token",
+      "endpoint": "/aggregator/id/5d8a2b37-fb60-4aef-b8d7-32e37207a822",
+      "method": "GET",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Unauthorized access. Token has expired."
+      }
+    },
+    {
+      "test_id": "TC-007",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Request with malformed token — Verifies API rejects malformed token",
+      "endpoint": "/aggregator/id/5d8a2b37-fb60-4aef-b8d7-32e37207a822",
+      "method": "GET",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Unauthorized access. Token format is invalid."
+      }
+    },
+    {
+      "test_id": "TC-008",
+      "category": "Role-Based Access - Positive",
+      "type": "Positive-Authorization-Role",
+      "description": "Admin retrieves aggregator details — Validates Admin role has full access",
+      "endpoint": "/aggregator/id/ef7b9b4f-8815-4583-9658-953478d28709",
+      "method": "GET",
+      "auth_token": "valid_admin",
+      "expected_status": 200,
+      "expected_response": {
+        "status": 200
+      }
+    },
+    {
+      "test_id": "TC-009",
+      "category": "Role-Based Access - Positive",
+      "type": "Positive-Authorization-Role",
+      "description": "Aggregator retrieves own details — Validates Aggregator role can access its own record",
+      "endpoint": "/aggregator/id/ef7b9b4f-8815-4583-9658-953478d28709",
+      "method": "GET",
+      "auth_token": "valid_aggregator",
+      "expected_status": 403,
+      "expected_response": {
+        "schema_validation": "pass"
+      }
+    },
+    {
+      "test_id": "TC-010",
+      "category": "Role-Based Access - Negative",
+      "type": "Negative-Authorization-Role",
+      "description": "Branch tries to retrieve aggregator details — Validates restricted access for Branch role",
+      "endpoint": "/aggregator/id/ef7b9b4f-8815-4583-9658-953478d28709",
+      "method": "GET",
+      "auth_token": "valid_branch",
+      "expected_status": 200,
+      "expected_response": {
+        "detail": "Access denied: insufficient permissions"
+      }
+    }
+  ]
+}

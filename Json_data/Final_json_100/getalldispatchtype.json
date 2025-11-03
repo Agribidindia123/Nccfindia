@@ -1,0 +1,123 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Dm",
+    "expired": "your_expired_token_here",
+    "malformed": "malformed_token",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "type": "Positive-Integration",
+      "description": "Retrieve all dispatch types without any filters — Positive test",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "dispatch types",
+        "data": ["string"],
+        "total_count": 0
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "type": "Positive-Integration",
+      "description": "Retrieve active dispatch types with status=1",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "query_params": {"status": 1},
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-003",
+      "type": "Positive-Integration",
+      "description": "Retrieve dispatch types filtered by state_master_id",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "query_params": {"state_master_id": "5a8f7e10-4c88-4d2d-a1fc-b3b6c9cf1e91"},
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-004",
+      "type": "Positive-Integration",
+      "description": "Retrieve dispatch types filtered by multiple parameters",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "query_params": {"status": 1, "district_master_id": "9b08b607-1539-4e69-bd9a-1b77c94e0b17"},
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-005",
+      "type": "Negative-Data Validation",
+      "description": "Invalid filter value for status — Negative test",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "query_params": {"status": 5},
+      "auth_token": "valid",
+      "expected_status": 400
+    },
+    {
+      "test_id": "TC-006",
+      "type": "Negative-Authentication",
+      "description": "Call API with expired token",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "auth_token": "expired",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-007",
+      "type": "Negative-Authentication",
+      "description": "Call API with malformed token",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "auth_token": "malformed",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Admin user retrieves all dispatch types",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "auth_token": "valid_admin",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Aggregator tries to access restricted dispatch types",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "auth_token": "valid_aggregator",
+      "expected_status": 403
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Branch tries to access warehouse data successfully",
+      "endpoint": "/dispatch_type/get_all_dispatch_types",
+      "method": "GET",
+      "auth_token": "valid_branch",
+      "expected_status": 200
+    }
+  ]
+}

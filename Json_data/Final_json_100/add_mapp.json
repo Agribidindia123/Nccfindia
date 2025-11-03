@@ -1,0 +1,321 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Di",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "invalid_token",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Create a valid MAPP record with no conflicting active MSP for the same commodity — Positive, CRUD Operation",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1100,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 200,
+      "expected_response": "MAPP/MSP created successfully with response DTO"
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Create a valid MSP record with no conflicting active MAPP for the same commodity — Positive, CRUD Operation",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1400,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 1,
+        "type": "Daily"
+      },
+      "expected_status": 200,
+      "expected_response": "MAPP/MSP created successfully with response DTO"
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Try creating MAPP when an active MSP already exists for the same commodity — Negative, Data Validation, CRUD Operation",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1100,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 400,
+      "expected_response": "Active MSP exists for this commodity"
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Try creating MSP when an active MAPP already exists for the same commodity — Negative, Data Validation, CRUD Operation",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1300,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 1,
+        "type": "Daily"
+      },
+      "expected_status": 400,
+      "expected_response": "Active MAPP exists for this commodity"
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Try creating price for same commodity/type in different geographic levels (District) — Negative, Data Validation, Boundary Case",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1200,
+        "added_by": "test ",
+        "eligible_for": "d",
+        "eligible_id": "1c4166c4-42ba-4952-91a8-c7249b4041ac",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 400,
+      "expected_response": "Only one geographic level can be active per commodity/type"
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Create new record for same commodity/date by deactivating exact duplicate, and adding new — Positive, Data Validation, CRUD Operation",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1300,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 200,
+      "expected_response": "Duplicate deactivated, new record added"
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Send MAPP record with mapp_price = 0 (invalid) — Negative, Data Validation, Boundary Case",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 0,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 422,
+      "expected_response": "Price must be greater than zero"
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Send request with missing required field commodity_master_id — Negative, Data Validation",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 0,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 422,
+      "expected_response": "Required field missing"
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Send request with invalid UUID in eligible_id — Negative, Data Validation",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 0,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "3fa85f64-5717-4562-b3fc-2c963f66a6",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 422,
+      "expected_response": "Please correct the following validation errors and try again. For 'scheme_master_id': Value must be a Guid."
+    },
+    {
+      "test_id": "TC-010",
+      "description": "added_by exceeds 100 characters — Negative, Data Validation, Boundary Case",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1,
+        "added_by": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestvtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest  ",
+        "eligible_for": "s",
+        "eligible_id": "bd47dc99-b60a-4015-ba19-e9add9640fbe",
+        "is_msp": 1,
+        "type": "Daily"
+      },
+      "expected_status": 422,
+      "expected_response": {
+        "validation_errors": [
+          {
+            "field": "added_by",
+            "message": "String should have at most 100 characters"
+          }
+        ]
+      }
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Unauthorized request with invalid token — Negative, Authentication & Authorization",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "invalid",
+      "request_body": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128",
+        "mapp_price": 1200,
+        "added_by": "string",
+        "eligible_for": "s",
+        "eligible_id": "a57ad7a4-cfd4-4bca-9f2b-0a0f91d31ac6",
+        "is_msp": 0,
+        "insert_date": "2025-10-04T05:56:38.711Z"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Missing or invalid Authorization header"
+      }
+    },
+    {
+      "test_id": "TC-012",
+      "description": "Unauthorized request with expired token — Negative, Authentication & Authorization",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "expired",
+      "request_body": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128",
+        "mapp_price": 1200,
+        "added_by": "string",
+        "eligible_for": "s",
+        "eligible_id": "a57ad7a4-cfd4-4bca-9f2b-0a0f91d31ac6",
+        "is_msp": 0,
+        "insert_date": "2025-10-04T05:56:38.711Z"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Token expired"
+      }
+    },
+    {
+      "test_id": "TC-013",
+      "description": "Unauthorized request with malformed token — Negative, Authentication & Authorization",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "malformed",
+      "request_body": {
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128",
+        "mapp_price": 1200,
+        "added_by": "string",
+        "eligible_for": "s",
+        "eligible_id": "a57ad7a4-cfd4-4bca-9f2b-0a0f91d31ac6",
+        "is_msp": 0,
+        "insert_date": "2025-10-04T05:56:38.711Z"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Malformed token"
+      }
+    },
+    {
+      "test_id": "TC-014",
+      "description": "Role-Based - Admin: Can add MAPP successfully",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid_admin",
+      "request_body": {
+       "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 200,
+      "expected_response": "MAPP added successfully by Admin"
+    },
+    {
+      "test_id": "TC-015",
+      "description": "Role-Based - Branch: Can add MAPP",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid_branch",
+      "request_body": {
+       "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1000,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 200,
+      "expected_response": "Branch users authorized to add MAPP"
+    },
+    {
+      "test_id": "TC-016",
+      "description": "Role-Based - Aggregator: Cannot add MAPP (forbidden)",
+      "endpoint": "/commodity_market_price/add_mapp",
+      "auth_token": "valid_aggregator",
+      "request_body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+        "mapp_price": 1,
+        "added_by": "test ",
+        "eligible_for": "s",
+        "eligible_id": "77a93bfa-6b46-4bfe-ac54-6395d00727f0",
+        "is_msp": 0,
+        "type": "Daily"
+      },
+      "expected_status": 403,
+      "expected_response": "Aggregator users are not authorized to add MAPP"
+    }
+  ]
+}

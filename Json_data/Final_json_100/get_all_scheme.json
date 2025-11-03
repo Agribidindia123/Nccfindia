@@ -1,0 +1,106 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Di",
+    "expired": "iXd32fC8Dx",
+    "malformed": "iXd32fC8D!",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_001",
+      "description": "Positive - Functional & Integration: Successfully retrieve list of all active schemes",
+      "category": "Functional - Positive",
+      "endpoint": "/schemes/get_schemes",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_002",
+      "description": "Negative - Authentication & Security: Request with invalid token",
+      "category": "Authentication - Negative",
+      "endpoint": "/schemes/get_schemes",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "invalid",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_003",
+      "description": "Negative - Authentication & Security: Unauthorized access without auth token (missing token)",
+      "category": "Authentication - Negative",
+      "endpoint": "/schemes/get_schemes",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "empty",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_004",
+      "description": "Negative - Authentication & Security: Request with expired token (Boundary Test)",
+      "category": "Authentication - Negative",
+      "endpoint": "/schemes/get_schemes",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "expired",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_005",
+      "description": "Negative - Authentication & Security: Request with malformed token (Boundary Test)",
+      "category": "Authentication - Negative",
+      "endpoint": "/schemes/get_schemes",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "malformed",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_006",
+      "description": "Role-Based - Admin user: Successfully retrieve all active schemes",
+      "category": "Role-Based - Positive - Admin",
+      "endpoint": "/schemes/get_schemes",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "valid_admin",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_007",
+      "description": "Role-Based - Aggregator user: Successfully retrieve all active schemes",
+      "category": "Role-Based - Positive - Aggregator",
+      "endpoint": "/schemes/get_schemes",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "valid_aggregator",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_008",
+      "description": "Role-Based - Branch user: Successfully retrieve all active schemes",
+      "category": "Role-Based - Positive - Branch",
+      "endpoint": "/schemes/get_schemes",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "valid_branch",
+      "expected_status": 200
+    }
+  ]
+}

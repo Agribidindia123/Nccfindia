@@ -1,0 +1,286 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalid123",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "malformed@@token",
+    "empty": "",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "ids": {
+    "scheme_valid": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375",
+    "scheme_invalid": "00000000-0000-0000-0000-000000000000"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Functional & CRUD: Successfully update scheme name and status with valid scheme ID and valid token",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "Demo update test",
+        "status": true
+      },
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Positive - Functional & CRUD: Update only scheme status without changing the name",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "status": false
+      },
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Positive - Functional & CRUD: Update only scheme name without changing status",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "Demo update test"
+      },
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Negative - Data Validation & CRUD: Scheme not found for given valid UUID format but non-existing scheme ID",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "00000000-0000-0000-0000-000000000000"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "Updated PM Kisan",
+        "status": true
+      },
+      "auth_token": "valid",
+      "expected_status": 404
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Data Validation & Boundary: Invalid request due to scheme name exceeding allowed length",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "gfhjgasdrtdftyfhghjkjhjbvvgftrdfgtrdesdfhytrdgredfkloinhvgfdrasedfvcgnjhgvfdsawertyuioplkkjhhgffdsazxxcvvbnn",
+        "status": true
+      },
+      "auth_token": "valid",
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Negative - Data Validation: Invalid data type for status field (should be boolean)",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "status": "active"
+      },
+      "auth_token": "valid",
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Negative - Data Validation & CRUD: Attempt to update with duplicate scheme name already existing",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "PM Kisan"
+      },
+      "auth_token": "valid",
+      "expected_status": 400
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Negative - Data Validation: Invalid UUID format for scheme_id",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "invalid-id"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "New Name"
+      },
+      "auth_token": "valid",
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Negative - Data Validation & CRUD: Empty request body (nothing to update)",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {},
+      "auth_token": "valid",
+      "expected_status": 400
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Negative - Authentication & Authorization: Unauthorized request with missing/empty token",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "Updated PM Kisan"
+      },
+      "auth_token": "empty",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Negative - Authentication & Authorization: Unauthorized request with expired token",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "Updated PM Kisan"
+      },
+      "auth_token": "expired",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-012",
+      "description": "Negative - Authentication & Authorization: Unauthorized request with malformed token",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "Updated PM Kisan"
+      },
+      "auth_token": "malformed",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-013",
+      "description": "Role-Based - Admin user successfully updates scheme details",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "Admin Updated Scheme",
+        "status": true
+      },
+      "auth_token": "valid_admin",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-014",
+      "description": "Role-Based - Aggregator user successfully updates scheme details",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "Aggregator Updated Scheme",
+        "status": true
+      },
+      "auth_token": "valid_aggregator",
+      "expected_status": 403
+    },
+    {
+      "test_id": "TC-015",
+      "description": "Role-Based - Branch user not authorized to update scheme details",
+      "method": "PUT",
+      "endpoint": "/schemes/update_scheme/{scheme_id}",
+      "path_params": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "request_body": {
+        "scheme_name": "Branch Attempt Update",
+        "status": true
+      },
+      "auth_token": "valid_branch",
+      "expected_status": 403
+    }
+  ]
+}

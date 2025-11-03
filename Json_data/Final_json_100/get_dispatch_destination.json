@@ -1,0 +1,149 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "content_type": "application/json",
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "expired": "expired_token_example",
+    "invalid": "invalid123",
+    "malformed": "malformed!@#token",
+    "empty": "",
+    "valid_id": "<fetched_from_login_api>",
+    "expired_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "dummy_invalid_aggregator_token",
+    "valid_branch": "<fetched_from_login_api_branch>"
+  },
+    "test_cases": [
+    {
+      "test_id": "TC001",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Get dispatch destinations with valid token and optional parameters",
+      "test_type": "Positive",
+      "auth_token": "valid",
+      "query_params": {
+        "nccf_branch_id": "6f74b544-a48b-4021-a468-d8d02a1f65dd",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128",
+        "dispatch_type_id": "8b2cc31d-00cd-4b50-88a8-f141581ba087",
+        "crop_year_id": "6b592786-fe83-4f68-8e70-5841b3cc6e72"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "destinations",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC002",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Get dispatch destinations with expired token",
+      "test_type": "Negative - Expired Token",
+      "auth_token": "expired",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_message": "Unauthorized - token expired"
+    },
+    {
+      "test_id": "TC003",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Get dispatch destinations with invalid token",
+      "test_type": "Negative - Invalid Token",
+      "auth_token": "invalid",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_message": "Unauthorized - invalid token"
+    },
+    {
+      "test_id": "TC004",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Get dispatch destinations with malformed token",
+      "test_type": "Negative - Malformed Token",
+      "auth_token": "malformed",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_message": "Unauthorized - malformed token"
+    },
+    {
+      "test_id": "TC005",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Get dispatch destinations with empty token",
+      "test_type": "Negative - Empty Token",
+      "auth_token": "empty",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_message": "Unauthorized - token missing"
+    },
+    {
+      "test_id": "TC006",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Get dispatch destinations with invalid branch_id",
+      "test_type": "Negative - Invalid Parameter",
+      "auth_token": "valid",
+      "query_params": {
+        "nccf_branch_id": "invalid-branch-id"
+      },
+      "expected_status": 422,
+      "expected_message": "Bad Request - invalid nccf_branch_id"
+    },
+    {
+      "test_id": "TC007",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Get dispatch destinations with no data for given filters",
+      "test_type": "Positive - No Data",
+      "auth_token": "valid",
+      "query_params": {
+        "nccf_branch_id": "00000000-0000-0000-0000-000000000000",
+        "commodity_master_id": "00000000-0000-0000-0000-000000000000"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "destinations",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC008",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Role-Based Access - Admin can fetch all dispatch destinations",
+      "test_type": "Role-Based",
+      "auth_token": "valid_admin",
+      "expected_status": 200,
+      "expected_message": "Successfully retrieved destinations for admin"
+    },
+    {
+      "test_id": "TC009",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Role-Based Access - Aggregator cannot fetch all dispatch destinations",
+      "test_type": "Role-Based",
+      "auth_token": "valid_aggregator",
+      "expected_status": 403,
+      "expected_message": "Access denied"
+    },
+    {
+      "test_id": "TC010",
+      "endpoint": "/dispatch_destination/get_dispatch_destinations",
+      "method": "GET",
+      "description": "Role-Based Access - Branch can fetch only dispatch destinations under their branch",
+      "test_type": "Role-Based",
+      "auth_token": "valid_branch",
+      "expected_status": 200,
+      "expected_message": "Successfully retrieved destinations for branch"
+    }
+  ]
+}

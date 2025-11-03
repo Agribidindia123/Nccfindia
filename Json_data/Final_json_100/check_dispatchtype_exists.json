@@ -1,0 +1,153 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Dm",
+    "expired": "iXd32fC8Dx",
+    "malformed": "invalid_token",
+    "empty": "",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Check dispatch type with non-existing crop_year_id — Positive, Data Validation",
+      "endpoint": "/dispatch_type/check_dispatch_type_exists",
+      "method": "GET",
+      "auth_token": "valid",
+      "query_params": {
+        "crop_year_id": "00000000-0000-0000-0000-000000000000",
+        "dispatch_type": "Express Delivery"
+      },
+      "expected_status": 200,
+      "expected_response": "Success"
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Missing Authorization Header — Negative, Authentication & Authorization, Security",
+      "endpoint": "/dispatch_type/check_dispatch_type_exists",
+      "method": "GET",
+      "auth_token": "empty",
+      "query_params": {
+        "crop_year_id": "6b592786-fe83-4f68-8e70-5841b3cc6e72",
+        "dispatch_type": "SALE"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Missing or invalid Authorization header"
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Validate data with valid token — Positive, Integration, Data Validation",
+      "endpoint": "/dispatch_type/check_dispatch_type_exists",
+      "method": "GET",
+      "auth_token": "valid",
+      "query_params": {
+        "crop_year_id": "6b592786-fe83-4f68-8e70-5841b3cc6e72",
+        "dispatch_type": "SALE"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "completed",
+        "data": ["string"]
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Request with invalid token — Negative, Authentication & Authorization, Security",
+      "endpoint": "/dispatch_type/check_dispatch_type_exists",
+      "method": "GET",
+      "auth_token": "invalid",
+      "query_params": {
+        "crop_year_id": "6b592786-fe83-4f68-8e70-5841b3cc6e72",
+        "dispatch_type": "SALE"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Failed to get signing key: Error decoding token headers."
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Request with expired token — Negative, Authentication & Authorization, Security",
+      "endpoint": "/dispatch_type/check_dispatch_type_exists",
+      "method": "GET",
+      "auth_token": "expired",
+      "query_params": {
+        "crop_year_id": "6b592786-fe83-4f68-8e70-5841b3cc6e72",
+        "dispatch_type": "SALE"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Failed to get signing key: Error decoding token headers."
+      }
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Request with malformed token — Negative, Authentication & Authorization, Security",
+      "endpoint": "/dispatch_type/check_dispatch_type_exists",
+      "method": "GET",
+      "auth_token": "malformed",
+      "query_params": {
+        "crop_year_id": "6b592786-fe83-4f68-8e70-5841b3cc6e72",
+        "dispatch_type": "SALE"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Failed to get signing key: Error decoding token headers."
+      }
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Admin user retrieves dispatch type",
+      "endpoint": "/dispatch_type/check_dispatch_type_exists",
+      "method": "GET",
+      "auth_token": "valid_admin",
+      "query_params": {
+        "crop_year_id": "6b592786-fe83-4f68-8e70-5841b3cc6e72",
+        "dispatch_type": "SALE"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Aggregator tries to access restricted dispatch type",
+      "endpoint": "/dispatch_type/check_dispatch_type_exists",
+      "method": "GET",
+      "auth_token": "valid_aggregator",
+      "query_params": {
+        "crop_year_id": "6b592786-fe83-4f68-8e70-5841b3cc6e72",
+        "dispatch_type": "SALE"
+      },
+      "expected_status": 403
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Branch tries to access restricted dispatch type",
+      "endpoint": "/dispatch_type/check_dispatch_type_exists",
+      "method": "GET",
+      "auth_token": "valid_branch",
+      "query_params": {
+        "crop_year_id": "6b592786-fe83-4f68-8e70-5841b3cc6e72",
+        "dispatch_type": "SALE"
+      },
+      "expected_status": 403
+    }
+  ]
+}

@@ -1,0 +1,263 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Dm",
+    "expired": "iXd32fC8Dx",
+    "malformed": "invalid_token",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Create new dispatch destination for dispatch_type 'SALE' with unique destination and no warehouse_id — Positive, CRUD Operation",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "request_body": {
+        "nccf_branch_id": "6f74b544-a48b-4021-a468-d8d02a1f65dd",
+        "dispatch_type_id": "8b2cc31d-00cd-4b50-88a8-f141581ba087",
+        "destination": "vasco",
+        "warehouse_id": "",
+        "added_by": "fabina"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Dispatch destination created successfully",
+        "data": {
+          "dispatch_destination_id": "2c2ee4b8-2914-4168-a7ba-40c27940bdce"
+        }
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Create new dispatch destination for dispatch_type 'WAREHOUSE' with unique destination and warehouse_id — Positive, CRUD Operation",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "dispatch_type_id": "d7dbba0b-f52b-4736-977f-c0f17acf5f7f",
+        "destination": "pune",
+        "warehouse_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "added_by": "test"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Dispatch destination created successfully.",
+        "data": {
+          "additionalProp1": {}
+        },
+        "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Attempt to create dispatch destination for 'WAREHOUSE' type that already exists (same dispatch_type_id, warehouse_id, nccf_branch_id) — Negative, Data Validation, CRUD Operation",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "dispatch_type_id": "d7dbba0b-f52b-4736-977f-c0f17acf5f7f",
+        "destination": "pimpari",
+        "warehouse_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "added_by": "test"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Dispatch destination created successfully.",
+        "data": {
+          "additionalProp1": {}
+        },
+        "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Attempt to create dispatch destination for 'SALE' type that already exists (same dispatch_type_id, nccf_branch_id) — Negative, Data Validation, CRUD Operation",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "request_body": {
+        "nccf_branch_id": "03bd05a0-0213-4864-8813-1ffdd25b5063",
+        "dispatch_type_id": "d7dbba0b-f52b-4736-977f-c0f17acf5f7f",
+        "destination": "hadpsar",
+        "added_by": "fabina"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Dispatch destination created successfully.",
+        "data": {
+          "additionalProp1": {}
+        },
+        "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Missing required field (destination) — Negative, Data Validation",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "request_body": {
+        "nccf_branch_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "dispatch_type_id": "sale-type-id",
+        "warehouse_id": null,
+        "added_by": "admin"
+      },
+      "expected_status": 422,
+      "expected_response": {
+        "status": "error",
+        "message": "validation failed",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Invalid UUID format in nccf_branch_id — Negative, Data Validation",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "request_body": {
+        "nccf_branch_id": "invalid-uuid",
+        "dispatch_type_id": "sale-type-id",
+        "destination": "Sale Location A",
+        "warehouse_id": null,
+        "added_by": "admin"
+      },
+      "expected_status": 422,
+      "expected_response": {
+        "status": "error",
+        "message": "validation failed",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Add dispatch destination with expired token — Negative, Authentication & Authorization",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "auth_token": "expired",
+      "request_body": {
+        "nccf_branch_id": "6f74b544-a48b-4021-a468-d8d02a1f65dd",
+        "dispatch_type_id": "c9db35b2-312a-4072-8312-d93a0c555076",
+        "destination": "alandi",
+        "warehouse_id": "ee86e55c-48e4-4056-9c1a-c061b6e6a9d1",
+        "added_by": "test"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Token expired"
+      }
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Add dispatch destination with malformed token — Negative, Authentication & Authorization",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "auth_token": "malformed",
+      "request_body": {
+         "nccf_branch_id": "6f74b544-a48b-4021-a468-d8d02a1f65dd",
+        "dispatch_type_id": "c9db35b2-312a-4072-8312-d93a0c555076",
+        "destination": "nashik",
+        "warehouse_id": "ee86e55c-48e4-4056-9c1a-c061b6e6a9d1",
+        "added_by": "test"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Malformed token"
+      }
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Admin user adds new dispatch destination — Positive, Role-Based Access Control",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "auth_token": "valid_admin",
+      "request_body": {
+        "nccf_branch_id": "6f74b544-a48b-4021-a468-d8d02a1f65dd",
+        "dispatch_type_id": "c9db35b2-312a-4072-8312-d93a0c555076",
+        "destination": "paranda",
+        "warehouse_id": "ee86e55c-48e4-4056-9c1a-c061b6e6a9d1",
+        "added_by": "test"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "Dispatch destination created successfully"
+      }
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Aggregator user attempts to add dispatch destination — Negative, Role-Based Access Control",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "auth_token": "valid_aggregator",
+      "request_body": {
+        "nccf_branch_id": "6f74b544-a48b-4021-a468-d8d02a1f65dd",
+        "dispatch_type_id": "c9db35b2-312a-4072-8312-d93a0c555076",
+        "destination": "bhum",
+        "warehouse_id": "ee86e55c-48e4-4056-9c1a-c061b6e6a9d1",
+        "added_by": "test"
+      },
+      "expected_status": 403,
+      "expected_response": {
+        "status": "error",
+        "message": "Forbidden - Aggregator not authorized to add dispatch destination"
+      }
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Branch user attempts to add dispatch destination — Positive, Role-Based Access Control",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "auth_token": "valid_branch",
+      "request_body": {
+         "nccf_branch_id": "6f74b544-a48b-4021-a468-d8d02a1f65dd",
+        "dispatch_type_id": "c9db35b2-312a-4072-8312-d93a0c555076",
+        "destination": "devgiri",
+        "warehouse_id": "ee86e55c-48e4-4056-9c1a-c061b6e6a9d1",
+        "added_by": "test"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": "error",
+        "message": "Dispatch destination created successfully"
+      }
+    },
+    {
+      "test_id": "TC-012",
+      "description": "Expired admin token while adding dispatch destination — Negative, Role-Based Access Control",
+      "endpoint": "/dispatch_destination/add_dispatch_destination",
+      "method": "POST",
+      "auth_token": "expired",
+      "request_body": {
+         "nccf_branch_id": "6f74b544-a48b-4021-a468-d8d02a1f65dd",
+        "dispatch_type_id": "c9db35b2-312a-4072-8312-d93a0c555076",
+        "destination": "malshet",
+        "warehouse_id": "ee86e55c-48e4-4056-9c1a-c061b6e6a9d1",
+        "added_by": "test"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "status": "error",
+        "message": "Unauthorized - token expired"
+      }
+    }
+  ]
+}

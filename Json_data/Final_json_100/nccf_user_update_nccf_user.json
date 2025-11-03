@@ -1,0 +1,259 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "PATCH",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Dm",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "malformedTokenExample",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_branch": "<fetched_from_login_api_branch>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional - Positive",
+      "type": "Positive-CRUD-Integration",
+      "description": "Update user with valid data — validates full update of user details",
+      "endpoint": "/nccf_user/update_nccf_user/fa9796e6-1c9d-4ab1-88a8-5b3f9d00ca15",
+      "method": "PATCH",
+      "request_body": {
+        "email_id": "test09@fmail.com",
+        "mobile_number": "8789876765",
+        "fullname": "John Doe"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "200",
+        "message": "User updated successfully",
+        "data": {
+          "additionalProp1": {}
+        },
+        "user_id": "e3698b18-5820-438e-8400-cf662e7da785"
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional - Positive",
+      "type": "Positive-CRUD-Integration",
+      "description": "Partial update (only email) — validates partial update functionality",
+      "endpoint": "/nccf_user/update_nccf_user/fa9796e6-1c9d-4ab1-88a8-5b3f9d00ca15",
+      "method": "PATCH",
+      "request_body": {
+        "email_id": "new1.email@example.com"
+      },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "200",
+        "message": "User updated successfully",
+        "data": {
+          "additionalProp1": {}
+        },
+        "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Boundary",
+      "description": "Invalid email format — API should reject invalid email values",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": {
+        "email_id": "invalid-email"
+      },
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": {
+        "status": "error",
+        "message": "Validation failed.",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Boundary",
+      "description": "Invalid mobile number format — API should reject invalid mobile numbers",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": {
+        "mobile_number": "12345"
+      },
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": {
+        "status": "error",
+        "message": "Validation failed.",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Conflict",
+      "description": "Email already exists (duplicate) — API should reject duplicate email updates",
+      "endpoint": "/nccf_user/update_nccf_user/fa9796e6-1c9d-4ab1-88a8-5b3f9d00ca15",
+      "method": "PATCH",
+      "request_body": {
+        "email_id": "rahul10@gmail.com"
+      },
+      "auth_token": "valid",
+      "expected_status": 409,
+      "expected_response": {
+  "detail": "Email rahul10@gmail.com already exists"
+}
+    },
+    {
+      "test_id": "TC-006",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Conflict",
+      "description": "Mobile number already exists (duplicate) — API should reject duplicate mobile numbers",
+      "endpoint": "/nccf_user/update_nccf_user/fa9796e6-1c9d-4ab1-88a8-5b3f9d00ca15",
+      "method": "PATCH",
+      "request_body": {
+        "mobile_number": "9036133769"
+      },
+      "auth_token": "valid",
+      "expected_status": 409,
+      "expected_response": {
+  "detail": "Mobile number 9036133769 already exists"
+}
+    },
+    {
+      "test_id": "TC-007",
+      "category": "Functional - Negative",
+      "type": "Negative-Boundary-DataValidation",
+      "description": "User ID not found — API should return error for non-existent user ID",
+      "endpoint": "/nccf_user/update_nccf_user/fa9796e6-1c9d-4ab1-88a8-5b3f9d00ca27",
+      "method": "PATCH",
+      "request_body": {
+        "fullname": "John Doe"
+      },
+      "auth_token": "valid",
+      "expected_status": 409,
+      "expected_response": {
+  "detail": "User with ID fa9796e6-1c9d-4ab1-88a8-5b3f9d00ca27 not found"
+}
+    },
+    {
+      "test_id": "TC-008",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-Boundary",
+      "description": "Empty request body — API should reject empty PATCH payload",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": {},
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": {
+        "status": "error",
+        "message": "Validation failed",
+        "data": []
+      }
+    },
+    {
+      "test_id": "TC-009",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Update with expired token — validates API rejects requests with expired authentication",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": {
+        "fullname": "John Doe"
+      },
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Token has expired"
+      }
+    },
+    {
+      "test_id": "TC-010",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Update with malformed token — validates API rejects requests with invalid token format",
+      "endpoint": "/nccf_user/update_nccf_user/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "method": "PATCH",
+      "request_body": {
+        "fullname": "John Doe"
+      },
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Token format is invalid"
+      }
+    },
+    {
+      "test_id": "TC-011",
+      "category": "Role-Based - Admin",
+      "type": "Positive-RoleBased-AccessControl",
+      "description": "Admin can update user successfully",
+      "endpoint": "/nccf_user/update_nccf_user/fa9796e6-1c9d-4ab1-88a8-5b3f9d00ca15",
+      "method": "PATCH",
+      "request_body": {
+        "fullname": "mahesh",
+        "email_id": "admin_add@example.com",
+        "mobile_number": "9123456789"
+      },
+      "auth_token": "valid_admin",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "200",
+        "message": "User updated successfully"
+      }
+    },
+    {
+      "test_id": "TC-012",
+      "category": "Role-Based - Branch",
+      "type": "Positive-RoleBased-AccessControl",
+      "description": "Branch can updated user successfully",
+      "endpoint": "/nccf_user/update_nccf_user/fa9796e6-1c9d-4ab1-88a8-5b3f9d00ca15",
+      "method": "PATCH",
+      "request_body": {
+        "fullname": "jatin",
+        "email_id": "branch_add@example.com",
+        "mobile_number": "9988776655"
+      },
+      "auth_token": "valid_branch",
+      "expected_status": 200,
+      "expected_response": {
+        "status": "success",
+        "message": "User updated successfully"
+      }
+    },
+    {
+      "test_id": "TC-013",
+      "category": "Role-Based - Aggregator",
+      "type": "Negative-RoleBased-AccessControl",
+      "description": "Aggregator cannot update user — unauthorized action",
+      "endpoint": "/nccf_user/update_nccf_user/fa9796e6-1c9d-4ab1-88a8-5b3f9d00ca15",
+      "method": "PATCH",
+      "request_body": {
+        "fullname": "pacs user",
+        "email_id": "agg_add@example.com",
+        "mobile_number": "9012345678"
+      },
+      "auth_token": "valid_aggregator",
+      "expected_status": 403,
+      "expected_response": {
+        "status": "error",
+        "message": "Aggregator not authorized to update users"
+      }
+    }
+  ]
+}

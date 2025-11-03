@@ -1,0 +1,163 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8vv",
+    "expired": "iXd32fC8Dx",
+    "malformed": "iXd32fC8D!",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "dummy_invalid_aggregator_token",
+    "valid_branch": "<fetched_from_login_api_branch>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_001",
+      "category": "Functional-Positive",
+      "description": "Positive - Functional & Integration: Retrieve all crop years without any filters",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "query_params": {},
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_002",
+      "category": "Functional-Positive",
+      "description": "Positive - Functional & Integration: Retrieve crop years filtered by commodity_master_id",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "query_params": { "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e" },
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_003",
+      "category": "Functional-Positive",
+      "description": "Positive - Functional & Integration: Retrieve crop years filtered by scheme_master_id",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "query_params": { "scheme_master_id": "b4a9e649-ae94-4432-b4a3-07cf511a2ffa" },
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_004",
+      "category": "Functional-Positive",
+      "description": "Positive - Functional & Integration: Retrieve crop years filtered by both commodity_master_id and scheme_master_id",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "query_params": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "scheme_master_id": "b4a9e649-ae94-4432-b4a3-07cf511a2ffa"
+      },
+      "auth_token": "valid",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_005",
+      "category": "Validation-Negative",
+      "description": "Negative - Data Validation: Invalid data type for commodity_master_id (int instead of UUID)",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "query_params": { "commodity_master_id": "1234556" },
+      "auth_token": "valid",
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC_006",
+      "category": "Validation-Negative",
+      "description": "Negative - Data Validation: Invalid data type for scheme_master_id (int instead of UUID)",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "query_params": { "scheme_master_id": "23456678" },
+      "auth_token": "valid",
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC_007",
+      "category": "Authentication-Security",
+      "description": "Negative - Authentication & Authorization: Unauthorized request with invalid token",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "query_params": {
+        "commodity_master_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "scheme_master_id": "c3d4e5f6-g7h8-9012-cdef-345678901234"
+      },
+      "auth_token": "invalid",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_008",
+      "category": "Authentication-Security",
+      "description": "Negative - Authentication & Authorization: Unauthorized request with expired token (Boundary Test)",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "query_params": {
+        "commodity_master_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "scheme_master_id": "c3d4e5f6-g7h8-9012-cdef-345678901234"
+      },
+      "auth_token": "expired",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_009",
+      "category": "Authentication-Security",
+      "description": "Negative - Authentication & Authorization: Unauthorized request with malformed token (Boundary Test)",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "query_params": {
+        "commodity_master_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "scheme_master_id": "c3d4e5f6-g7h8-9012-cdef-345678901234"
+      },
+      "auth_token": "malformed",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_010",
+      "category": "Role-Based",
+      "description": "Role-Based Access: Admin can fetch all crop years",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "auth_token": "valid_admin",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_011",
+      "category": "Role-Based",
+      "description": "Role-Based Access: Aggregator cannot fetch all crop years",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "auth_token": "valid_aggregator",
+      "expected_status": 403
+    },
+    {
+      "test_id": "TC_012",
+      "category": "Role-Based",
+      "description": "Role-Based Access: Branch cannot fetch all crop years",
+      "method": "GET",
+      "endpoint": "/crop_year/get_crop_years",
+      "headers": { "Content-Type": "application/json" },
+      "auth_token": "valid_branch",
+      "expected_status": 403
+    }
+  ]
+}

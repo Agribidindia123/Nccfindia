@@ -1,0 +1,196 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "PUT",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Dm",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczovL2NvZ25pdG8taWRwLmFwLXNvdXRoLTEuYW1hem9uYXdzLmNvbS9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "iXd32fC8D!",
+    "empty": "",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Successfully update crop year with all fields",
+      "category": "Positive | Functional | CRUD",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "valid",
+      "body": {
+        "commodity_master_id": "a836438f-092d-424b-a360-682430c45b0e",
+        "commodity_main_season_master_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "scheme_master_id": "b4a9e649-ae94-4432-b4a3-07cf511a2ffa",
+        "crop_year_name": "jawar",
+        "season_year": 2025,
+        "added_by": "string",
+        "start_date": "2025-10-30T13:22:26.033Z",
+        "end_date": "2025-10-31T13:22:26.033Z",
+        "status": true
+      },
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Crop year updated successfully",
+        "crop_year_id"
+      ]
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Positive - Update only crop_year_name",
+      "category": "Positive | Functional",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "valid",
+      "body": {
+        "crop_year_name": "2025-26"
+      },
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Crop year updated successfully"
+      ]
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Negative - crop_year_name too short",
+      "category": "Negative | Validation",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "valid",
+      "body": {
+        "crop_year_name": "20"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "Bad Request"
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Negative - season_year out of range",
+      "category": "Negative | Validation",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "valid",
+      "body": {
+        "season_year": 1890
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "Bad Request"
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Invalid (non-existent) crop year id",
+      "category": "Negative | Functional",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719a",
+      "auth_token": "valid",
+      "body": {
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719a"
+      },
+      "expected_status": 404,
+      "expected_error_message_substring": "not found"
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Negative - added_by exceeds length",
+      "category": "Negative | Validation",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "valid",
+      "body": {
+        "added_by": "gfhjgasdrtdftyfhghjkjhjbvvgftrdfgtrdesdfhytrdgredfkloinhvgfdrasedfvcgnjhgvfdsawertyuioplkkjhhgffdsazxxcvvbnn"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "at most 100 characters"
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Positive - Update only status",
+      "category": "Positive | Functional",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "valid",
+      "body": {
+        "status": false
+      },
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Crop year updated successfully"
+      ]
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Negative - No token",
+      "category": "Negative | Auth",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "empty",
+      "body": {
+        "crop_year_id": "d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Positive - Admin updates crop year",
+      "category": "Positive | Role-Based",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "valid_admin",
+      "body": {
+        "crop_year_name": "2025-26",
+        "season_year": 2025,
+        "added_by": "Admin User"
+      },
+      "expected_status": 200,
+      "expected_response_contains": [
+        "updated successfully"
+      ]
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Negative - Aggregator cannot update crop year",
+      "category": "Negative | Role-Based",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "valid_aggregator",
+      "body": {
+        "crop_year_name": "2025-26",
+        "season_year": 2025,
+        "added_by": "Aggregator User"
+      },
+      "expected_status": 403,
+      "expected_error_message_substring": "Access denied"
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Negative - Branch cannot update crop year",
+      "category": "Negative | Role-Based",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "valid_branch",
+      "body": {
+        "crop_year_name": "2025-26",
+        "season_year": 2025,
+        "added_by": "Branch User"
+      },
+      "expected_status": 403,
+      "expected_error_message_substring": "Access denied"
+    },
+    {
+      "test_id": "TC-012",
+      "description": "Negative - Expired token",
+      "category": "Negative | Auth",
+      "endpoint": "/crop_year/update_crop_year/d58e0f52-ed90-4d0d-bb6a-d3bdc7cd719b",
+      "auth_token": "expired",
+      "body": {
+        "crop_year_name": "2025-26",
+        "season_year": 2025,
+        "added_by": "Admin User"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Token expired"
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalidToken123",
+    "empty": "",
+    "expired": "expiredTokenExample",
+    "malformed": "malformedTokenExample",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_branch": "<fetched_from_login_api_branch>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC001",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Retrieve a commodity market price by a valid and existing price_id — Valid request, verifies successful fetch of a specific record, Data Validation, Integration",
+      "method": "GET",
+      "endpoint": "/commodity_market_price/get_by_id/ff004cc0-dfaa-4659-8249-5d0158af1bb7",
+      "auth_token": "valid",
+      "query_params": {
+        "price_id": "ff004cc0-dfaa-4659-8249-5d0158af1bb7"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC002",
+      "category": "Functional - Negative",
+      "type": "Negative-DataValidation-CRUD",
+      "description": "Try retrieving a record by a non-existent price_id — Verifies API returns 404 for missing resource, Boundary/Negative testing, Data Validation",
+      "method": "GET",
+      "endpoint": "/commodity_market_price/get_by_id/109e4567-e89b-12d3-a456-426614174000",
+      "auth_token": "valid",
+      "query_params": {
+        "price_id": "109e4567-e89b-12d3-a456-426614174000"
+      },
+      "expected_status": 404
+    },
+    {
+      "test_id": "TC003",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Unauthorized request with missing token — Verifies API rejects requests without Authorization header, Security, Authentication & Authorization",
+      "method": "GET",
+      "endpoint": "/commodity_market_price/get_by_id/123e4567-e89b-12d3-a456-426614174000",
+      "auth_token": "empty",
+      "query_params": {
+        "price_id": "123e4567-e89b-12d3-a456-426614174000"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC004",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Unauthorized request with invalid token — Verifies API rejects requests with invalid token, Security, Authentication & Authorization",
+      "method": "GET",
+      "endpoint": "/commodity_market_price/get_by_id/123e4567-e89b-12d3-a456-426614174000",
+      "auth_token": "invalid",
+      "query_params": {
+        "price_id": "123e4567-e89b-12d3-a456-426614174000"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC005",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Unauthorized request with expired token — Verifies API rejects requests with expired token, Security, Authentication & Authorization",
+      "method": "GET",
+      "endpoint": "/commodity_market_price/get_by_id/123e4567-e89b-12d3-a456-426614174000",
+      "auth_token": "expired",
+      "query_params": {
+        "price_id": "123e4567-e89b-12d3-a456-426614174000"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC006",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Unauthorized request with malformed token — Verifies API rejects requests with malformed token, Security, Authentication & Authorization",
+      "method": "GET",
+      "endpoint": "/commodity_market_price/get_by_id/123e4567-e89b-12d3-a456-426614174000",
+      "auth_token": "malformed",
+      "query_params": {
+        "price_id": "123e4567-e89b-12d3-a456-426614174000"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC007",
+      "category": "Role-Based",
+      "type": "Role-Based-Access",
+      "description": "Admin user can fetch commodity market price by price_id — Validates admin role access",
+      "method": "GET",
+      "endpoint": "/commodity_market_price/get_by_id/ff004cc0-dfaa-4659-8249-5d0158af1bb7",
+      "auth_token": "valid_admin",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC008",
+      "category": "Role-Based",
+      "type": "Role-Based-Access",
+      "description": "Aggregator user should fail fetching commodity market price by price_id — Verifies aggregator cannot access this endpoint",
+      "method": "GET",
+      "endpoint": "/commodity_market_price/get_by_id/ff004cc0-dfaa-4659-8249-5d0158af1bb7",
+      "auth_token": "valid_aggregator",
+      "expected_status": 403
+    },
+    {
+      "test_id": "TC009",
+      "category": "Role-Based",
+      "type": "Role-Based-Access",
+      "description": "Branch should fail fetching commodity market price by price_id",
+      "method": "GET",
+      "endpoint": "/commodity_market_price/get_by_id/ff004cc0-dfaa-4659-8249-5d0158af1bb7",
+      "auth_token": "valid_branch",
+      "expected_status": 403
+    }
+  ]
+}

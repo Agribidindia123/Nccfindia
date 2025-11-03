@@ -1,0 +1,114 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalid123",
+    "empty": "",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_001",
+      "description": "Get all active warehouses (default behavior)",
+      "method": "GET",
+      "endpoint": "/warehouse/get_all_warehouses",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {},
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_002",
+      "description": "Get all warehouses with status = 0 (inactive)",
+      "method": "GET",
+      "endpoint": "/warehouse/get_all_warehouses",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {
+        "status": 0
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_003",
+      "description": "Filter warehouses by state_master_id",
+      "method": "GET",
+      "endpoint": "/warehouse/get_all_warehouses",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {
+        "state_master_id": "ac0a1e52-b9c6-462b-81c0-0b5e0a5d7ef5"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_004",
+      "description": "Negative - Invalid token",
+      "method": "GET",
+      "endpoint": "/warehouse/get_all_warehouses",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {},
+      "auth_token": "invalid",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_005",
+      "description": "Negative - Empty token",
+      "method": "GET",
+      "endpoint": "/warehouse/get_all_warehouses",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {},
+      "auth_token": "empty",
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC_006",
+      "description": "Admin user retrieves all warehouses",
+      "method": "GET",
+      "endpoint": "/warehouse/get_all_warehouses",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {},
+      "auth_token": "valid_admin",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC_007",
+      "description": "Aggregator tries to access restricted warehouse data",
+      "method": "GET",
+      "endpoint": "/warehouse/get_all_warehouses",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {},
+      "auth_token": "valid_aggregator",
+      "expected_status": 403
+    },
+    {
+      "test_id": "TC_008",
+      "description": "Branch tries to access warehouse data successfully",
+      "method": "GET",
+      "endpoint": "/warehouse/get_all_warehouses",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "query_params": {},
+      "auth_token": "valid_branch",
+      "expected_status": 200
+    }
+  ]
+}

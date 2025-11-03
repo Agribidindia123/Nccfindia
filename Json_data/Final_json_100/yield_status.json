@@ -1,0 +1,175 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "PUT",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalid123",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "malformed@@token",
+    "empty": "",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Toggle yield status with valid yield_id and deleted_by",
+      "category": "Positive / Data Update",
+      "endpoint": "/yield/status",
+      "auth_token": "valid",
+      "request_body": {
+        "yield_id": "d126cd5d-085a-49e3-890d-deecb21af828",
+        "deleted_by": "abc"
+      },
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Yield status toggled",
+        "yield_id"
+      ]
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Negative - Missing yield_id field",
+      "category": "Negative / Data Validation",
+      "endpoint": "/yield/status",
+      "auth_token": "valid",
+      "request_body": {
+        "deleted_by": "abc"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "yield_id is required"
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Negative - Invalid UUID format for yield_id",
+      "category": "Negative / Input Validation",
+      "endpoint": "/yield/status",
+      "auth_token": "valid",
+      "request_body": {
+        "yield_id": "1234-invalid-uuid",
+        "deleted_by": "abc"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "Invalid UUID format"
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Negative - Non-existing yield_id",
+      "category": "Negative / Data Validation",
+      "endpoint": "/yield/status",
+      "auth_token": "valid",
+      "request_body": {
+        "yield_id": "00000000-0000-0000-0000-000000000000",
+        "deleted_by": "abc"
+      },
+      "expected_status": 404,
+      "expected_error_message_substring": "Yield not found"
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Empty Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/yield/status",
+      "auth_token": "empty",
+      "request_body": {
+        "yield_id": "d126cd5d-085a-49e3-890d-deecb21af828",
+        "deleted_by": "abc"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Negative - Invalid Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/yield/status",
+      "auth_token": "invalid",
+      "request_body": {
+        "yield_id": "d126cd5d-085a-49e3-890d-deecb21af828",
+        "deleted_by": "abc"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Negative - Expired Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/yield/status",
+      "auth_token": "expired",
+      "request_body": {
+        "yield_id": "d126cd5d-085a-49e3-890d-deecb21af828",
+        "deleted_by": "abc"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Token expired"
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Negative - Malformed Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/yield/status",
+      "auth_token": "malformed",
+      "request_body": {
+        "yield_id": "d126cd5d-085a-49e3-890d-deecb21af828",
+        "deleted_by": "abc"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token format"
+    },
+        {
+      "test_id": "TC-009",
+      "description": "Positive Role-Based - Admin toggles yield status successfully",
+      "category": "Positive / Role-Based Access",
+      "endpoint": "/yield/status",
+      "auth_token": "valid_admin",
+      "request_body": {
+        "yield_id": "d126cd5d-085a-49e3-890d-deecb21af828",
+        "deleted_by": "admin_user"
+      },
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Yield status toggled",
+        "yield_id"
+      ]
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Positive Role-Based - Aggregator forbidden to toggle yield status",
+      "category": "Positive / Role-Based Access",
+      "endpoint": "/yield/status",
+      "auth_token": "valid_aggregator",
+      "request_body": {
+        "yield_id": "d126cd5d-085a-49e3-890d-deecb21af828",
+        "deleted_by": "aggregator_user"
+      },
+      "expected_status": 403,
+      "expected_error_message_substring": "Forbidden"
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Negative Role-Based - Branch user forbidden to toggle yield status",
+      "category": "Negative / Role-Based Access",
+      "endpoint": "/yield/status",
+      "auth_token": "valid_branch",
+      "request_body": {
+        "yield_id": "d126cd5d-085a-49e3-890d-deecb21af828",
+        "deleted_by": "branch_user"
+      },
+      "expected_status": 403,
+      "expected_error_message_substring": "Forbidden"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "PUT",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Di",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "malformed_token",
+    "empty": "",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Update yield with valid token",
+      "category": "Positive | Functional | CRUD",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "valid",
+      "body": {
+        "quantity_per_hectare_in_qtl": 1,
+        "update_date": "2025-10-09T07:55:56.718Z"
+      },
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Yield updated successfully",
+        "yield_id"
+      ]
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Negative - No token provided",
+      "category": "Negative | Authorization",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "empty",
+      "body": {
+        "quantity_per_hectare_in_qtl": 1,
+        "update_date": "2025-10-09T07:55:56.718Z"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Negative - Expired token",
+      "category": "Negative | Authentication",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "expired",
+      "body": {
+        "quantity_per_hectare_in_qtl": 1,
+        "update_date": "2025-10-09T07:55:56.718Z"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Token expired"
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Negative - Malformed token",
+      "category": "Negative | Authentication",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "malformed",
+      "body": {
+        "quantity_per_hectare_in_qtl": 1,
+        "update_date": "2025-10-09T07:55:56.718Z"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Missing required field quantity_per_hectare_in_qtl",
+      "category": "Negative | Validation",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "valid",
+      "body": {
+        "update_date": "2025-10-09T13:18:46.196Z"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "quantity_per_hectare_in_qtl is required"
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Positive Role-Based Access - Admin updates yield successfully",
+      "category": "Positive | Role-Based | Authorization",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "valid_admin",
+      "body": {
+        "quantity_per_hectare_in_qtl": 2,
+        "update_date": "2025-10-09T08:55:56.718Z"
+      },
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Yield updated successfully",
+        "yield_id"
+      ]
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Negative Role-Based Access - Aggregator user forbidden to update yield",
+      "category": "Positive | Role-Based | Authorization",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "valid_aggregator",
+      "body": {
+        "quantity_per_hectare_in_qtl": 3,
+        "update_date": "2025-10-09T09:55:56.718Z"
+      },
+      "expected_status": 403,
+      "expected_error_message_substring": "Forbidden"
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Negative Role-Based Access - Branch user forbidden to update yield",
+      "category": "Negative | Role-Based | Authorization",
+      "endpoint": "/yield/update_yield/9aa11ccb-1bcc-4d7c-ba62-12e2e892807f",
+      "auth_token": "valid_branch",
+      "body": {
+        "quantity_per_hectare_in_qtl": 4,
+        "update_date": "2025-10-09T10:55:56.718Z"
+      },
+      "expected_status": 403,
+      "expected_error_message_substring": "Forbidden"
+    }
+  ]
+}

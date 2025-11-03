@@ -1,0 +1,248 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Di",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "malformed_token",
+    "empty": "",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_branch": "<fetched_from_login_api_branch>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Add branch with valid token",
+      "category": "Positive | Functional | CRUD",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "valid",
+      "body": {
+        "branch_manager_name": "rajiv shukla",
+        "branch_email_id": "barmatibranch@example.com",
+        "branch_manager_mobile_number": "7890076890",
+        "branch_name": "bramati Manager",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "d3cb83e7-5f51-4fb4-a31d-441d19eaa6aa",
+        "city_master_id": "606aff9d-7ab1-4ff5-a5cd-1523eb2449db"
+      },
+      "expected_status": [200, 400],
+      "expected_response_contains": [
+        "Branch added successfully",
+        "Branch already exists"
+      ]
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Negative - Missing branch_manager_name",
+      "category": "Negative | Validation",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "valid",
+      "body": {
+        "branch_email_id": "barmatibranch@example.com",
+        "branch_manager_mobile_number": "7890076890",
+        "branch_name": "bramati Manager",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "d3cb83e7-5f51-4fb4-a31d-441d19eaa6aa",
+        "city_master_id": "606aff9d-7ab1-4ff5-a5cd-1523eb2449db"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "Validation failed"
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Negative - Invalid email format",
+      "category": "Negative | Validation",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "valid",
+      "body": {
+        "branch_manager_name": "rajiv shukla",
+        "branch_email_id": "barm@",
+        "branch_manager_mobile_number": "7890076890",
+        "branch_name": "bramati Manager",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "d3cb83e7-5f51-4fb4-a31d-441d19eaa6aa",
+        "city_master_id": "606aff9d-7ab1-4ff5-a5cd-1523eb2449db"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "Validation failed"
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Negative - Invalid mobile number length",
+      "category": "Negative | Validation",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "valid",
+      "body": {
+        "branch_manager_name": "rajiv shukla",
+        "branch_email_id": "barmatibranch@example.com",
+        "branch_manager_mobile_number": "878",
+        "branch_name": "bramati Manager",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "d3cb83e7-5f51-4fb4-a31d-441d19eaa6aa",
+        "city_master_id": "606aff9d-7ab1-4ff5-a5cd-1523eb2449db"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "Validation failed"
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Invalid state_master_id format",
+      "category": "Negative | Validation",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "valid",
+      "body": {
+        "branch_manager_name": "John Doe",
+        "branch_email_id": "john.doe@example.com",
+        "branch_manager_mobile_number": "9876543210",
+        "branch_name": "Test Branch",
+        "state_master_id": "invalid-uuid",
+        "district_master_id": "bc67b7fa-22b9-4b25-8c7e-52e19c299b5f",
+        "city_master_id": "fe65f83a-cbe7-4c5c-b5fc-76f477f8b72a"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "Validation failed"
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Negative - Missing token",
+      "category": "Negative | Authorization",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "empty",
+      "body": {
+        "branch_manager_name": "John Doe",
+        "branch_email_id": "john.doe@example.com",
+        "branch_manager_mobile_number": "9876543210",
+        "branch_name": "Test Branch",
+        "state_master_id": "fcb29f62-91e6-4a93-b13e-9c8159b02da9",
+        "district_master_id": "bc67b7fa-22b9-4b25-8c7e-52e19c299b5f",
+        "city_master_id": "fe65f83a-cbe7-4c5c-b5fc-76f477f8b72a"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Missing or invalid authentication token"
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Negative - Expired Token",
+      "category": "Negative | Authentication",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "expired",
+      "body": {
+        "branch_manager_name": "John Doe",
+        "branch_email_id": "john.doe@example.com",
+        "branch_manager_mobile_number": "9876543210",
+        "branch_name": "Test Branch",
+        "state_master_id": "fcb29f62-91e6-4a93-b13e-9c8159b02da9",
+        "district_master_id": "bc67b7fa-22b9-4b25-8c7e-52e19c299b5f",
+        "city_master_id": "fe65f83a-cbe7-4c5c-b5fc-76f477f8b72a"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Token expired"
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Negative - Malformed token",
+      "category": "Negative | Authentication",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "malformed",
+      "body": {
+        "branch_manager_name": "John Doe",
+        "branch_email_id": "john.doe@example.com",
+        "branch_manager_mobile_number": "9876543210",
+        "branch_name": "Test Branch",
+        "state_master_id": "fcb29f62-91e6-4a93-b13e-9c8159b02da9",
+        "district_master_id": "bc67b7fa-22b9-4b25-8c7e-52e19c299b5f",
+        "city_master_id": "fe65f83a-cbe7-4c5c-b5fc-76f477f8b72a"
+      },
+      "expected_status": 401,
+      "expected_error_message_substring": "Failed to get"
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Negative - Empty / null fields",
+      "category": "Negative | Edge Case",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "valid",
+      "body": {
+        "branch_manager_name": "",
+        "branch_email_id": null,
+        "branch_manager_mobile_number": "",
+        "branch_name": "",
+        "state_master_id": "fcb29f62-91e6-4a93-b13e-9c8159b02da9",
+        "district_master_id": "bc67b7fa-22b9-4b25-8c7e-52e19c299b5f",
+        "city_master_id": "fe65f83a-cbe7-4c5c-b5fc-76f477f8b72a"
+      },
+      "expected_status": 422,
+      "expected_error_message_substring": "Validation failed"
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Positive RBAC - Admin can add branch",
+      "category": "Positive | Role-Based",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "valid_admin",
+      "body": {
+        "branch_manager_name": "rajiv shukla",
+        "branch_email_id": "barmatibranch@example.com",
+        "branch_manager_mobile_number": "7890076890",
+        "branch_name": "bramati Manager",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e",
+        "district_master_id": "d3cb83e7-5f51-4fb4-a31d-441d19eaa6aa",
+        "city_master_id": "04277437-d7bb-4c13-b23c-402651d0f47f"
+      },
+      "expected_status": [200,400],
+      "expected_response_contains": [
+        "Branch added successfully",
+        "Branch already exists"
+      ]
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Negative RBAC - Aggregator cannot add branch",
+      "category": "Negative | Role-Based",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "valid_aggregator",
+      "body": {
+        "branch_manager_name": "Agg Test",
+        "branch_email_id": "aggtest@example.com",
+        "branch_manager_mobile_number": "9998877665",
+        "branch_name": "Aggregator Branch",
+        "state_master_id": "fcb29f62-91e6-4a93-b13e-9c8159b02da9",
+        "district_master_id": "bc67b7fa-22b9-4b25-8c7e-52e19c299b5f",
+        "city_master_id": "fe65f83a-cbe7-4c5c-b5fc-76f477f8b72a"
+      },
+      "expected_status": 403,
+      "expected_error_message_substring": "Access denied"
+    },
+    {
+      "test_id": "TC-012",
+      "description": "Negative RBAC - Branch user cannot add another branch",
+      "category": "Negative | Role-Based",
+      "endpoint": "/branch/add_branch",
+      "auth_token": "valid_branch",
+      "body": {
+        "branch_manager_name": "Branch Test",
+        "branch_email_id": "branchauth@example.com",
+        "branch_manager_mobile_number": "7778889990",
+        "branch_name": "Branch Role Test",
+        "state_master_id": "fcb29f62-91e6-4a93-b13e-9c8159b02da9",
+        "district_master_id": "bc67b7fa-22b9-4b25-8c7e-52e19c299b5f",
+        "city_master_id": "fe65f83a-cbe7-4c5c-b5fc-76f477f8b72a"
+      },
+      "expected_status": 403,
+      "expected_error_message_substring": "Access denied"
+    }
+  ]
+}

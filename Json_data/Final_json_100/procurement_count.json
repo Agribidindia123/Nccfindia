@@ -1,0 +1,173 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalid123",
+    "expired": "expired_token_example",
+    "malformed": "malformed@@token",
+    "empty": "",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_branch": "<fetched_from_login_api_branch>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC001",
+      "description": "Positive - Get procurement count without filters (default)",
+      "category": "Positive / Functional",
+      "endpoint": "/procurement/count",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "total_records",
+        "total_pages"
+      ]
+    },
+    {
+      "test_id": "TC002",
+      "description": "Positive - Get procurement count with all valid filter parameters",
+      "category": "Positive / Data Validation",
+      "endpoint": "/procurement/count?aggregator_id=2797c8f0-7414-42ad-93af-3105aceca2a0&nccf_branch_id=3ef5b8a4-b4ee-4c98-8dbb-24d473cb4f51&scheme_master_id=24510e0d-bb16-4a3e-8f81-a4230d848415&commodity_master_id=bf7cbefe-dca3-470a-a509-f2343eb4f128&crop_year_id=78827df4-94b1-4034-93f6-ee5be6dc5080&farmer_id=00036e33-b261-4e8b-92ed-9aaaad4f7caa&page_size=200",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "total_records",
+        "total_pages"
+      ]
+    },
+    {
+      "test_id": "TC003",
+      "description": "Negative - Invalid aggregator_id format",
+      "category": "Negative / Input Validation",
+      "endpoint": "/procurement/count?aggregator_id=@@@###",
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_error_message_substring": "Invalid aggregator_id format"
+    },
+    {
+      "test_id": "TC004",
+      "description": "Negative - Invalid numeric value for page_size (string instead of number)",
+      "category": "Negative / Input Validation",
+      "endpoint": "/procurement/count?page_size=abc",
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_error_message_substring": "Invalid page_size"
+    },
+    {
+      "test_id": "TC005",
+      "description": "Negative - Empty Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/procurement/count",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_error_message_substring": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "TC006",
+      "description": "Negative - Invalid Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/procurement/count",
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC007",
+      "description": "Negative - Expired Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/procurement/count",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_error_message_substring": "Token expired"
+    },
+    {
+      "test_id": "TC008",
+      "description": "Negative - Malformed Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/procurement/count",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token format"
+    },
+    {
+      "test_id": "TC009",
+      "description": "Boundary - Very large page_size value (100000)",
+      "category": "Boundary / Performance",
+      "endpoint": "/procurement/count?page_size=100000",
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_error_message_substring": "page_size exceeds limit"
+    },
+    {
+      "test_id": "TC010",
+      "description": "Negative - Malformed query string",
+      "category": "Negative / Malformed Request",
+      "endpoint": "/procurement/count?farmer_id=123&&&",
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_error_message_substring": "Malformed query parameters"
+    },
+    {
+      "test_id": "TC011",
+      "description": "Performance - Ensure API responds within 1 second",
+      "category": "Performance / Response Time",
+      "endpoint": "/procurement/count",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "performance": {
+        "max_response_time_ms": 1000
+      },
+      "expected_response_contains": [
+        "total_records"
+      ]
+    },
+    {
+      "test_id": "TC012",
+      "description": "Role-Based Access - Admin can fetch total procurement count",
+      "category": "Role-Based / Authorization",
+      "endpoint": "/procurement/count",
+      "auth_token": "valid_admin",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "total_records",
+        "total_pages"
+      ]
+    },
+    {
+      "test_id": "TC013",
+      "description": "Role-Based Access - Aggregator can fetch only their assigned procurement count",
+      "category": "Role-Based / Authorization",
+      "endpoint": "/procurement/count",
+      "auth_token": "valid_aggregator",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "total_records",
+        "total_pages"
+      ]
+    },
+    {
+      "test_id": "TC014",
+      "description": "Role-Based Access - Branch can fetch only procurement count under their branch",
+      "category": "Role-Based / Authorization",
+      "endpoint": "/procurement/count",
+      "auth_token": "valid_branch",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "total_records",
+        "total_pages"
+      ]
+    }
+  ]
+}

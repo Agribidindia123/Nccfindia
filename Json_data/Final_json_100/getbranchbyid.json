@@ -1,0 +1,189 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Dx",
+    "expired": "expired_token_example",
+    "malformed": "malformed_token_example",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional - Positive",
+      "type": "Positive-Integration-CRUD",
+      "description": "Fetch branch by valid branch_id — Positive test, validates API retrieves branch details correctly, Data Validation, Integration",
+      "endpoint": "/branch/get_branch/3ef5b8a4-b4ee-4c98-8dbb-24d473cb4f51",
+      "method": "GET",
+      "request_params": {
+        "branch_id": "3ef5b8a4-b4ee-4c98-8dbb-24d473cb4f51"
+      },
+      "expected_status": 200,
+      "expected_response": {
+        "status": 200,
+        "message": "Branch retrieved successfully",
+        "data": [
+          {
+            "nccf_branch_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128",
+            "branch_code": "NC0000028",
+            "branch_name": "Andhra Pradesh",
+            "branch_manager_name": "NULL",
+            "branch_manager_mobile_number": "7304897544",
+            "branch_email_id": "test@01gmail.com",
+            "state_master_id": "ec3a25e8-2333-455a-bce9-9422a11342fb",
+            "district_master_id": "cfc2abec-d82c-4984-8cb9-afebb1d15fd7",
+            "city_master_id": "bf853e5b-e195-409c-a02d-165fdcc82a01",
+            "create_date": "2024-10-21T17:58:00Z",
+            "update_date": "2025-08-18T08:43:39.166055Z",
+            "status": 1,
+            "state_name": "Andhra Pradesh",
+            "district_name": "Chittoor",
+            "city_name": "Chittoor"
+          }
+        ],
+        "total_count": 1
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional - Negative",
+      "type": "Negative-Integration-CRUD",
+      "description": "Branch_id does not exist — Negative test, validates API returns proper 404 error for non-existent branch, Integration, Data Validation",
+      "endpoint": "/branch/get_branch/bf7cbefe-dca3-470a-a509-f2343eb4f777",
+      "method": "GET",
+      "request_params": {
+        "branch_id": "3ef5b8a4-b4ee-4c98-8dbb-24d473cb4f52"
+      },
+      "expected_status": 404,
+      "expected_response": {
+        "detail": "Branch not found"
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access without token — Negative test, validates API rejects requests missing Authorization header, Security, Authentication & Authorization",
+      "endpoint": "/branch/get_branch/bf7cbefe-dca3-470a-a509-f2343eb4f777",
+      "method": "GET",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Missing or invalid Authorization header"
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access with invalid token — Negative test, validates API rejects invalid tokens, Security, Authentication & Authorization",
+      "endpoint": "/branch/get_branch/bf7cbefe-dca3-470a-a509-f2343eb4f777",
+      "method": "GET",
+      "auth_token": "invalid",
+      "request_params": {
+        "token": "iXd32fC8Dx"
+      },
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Failed to get signing key: Error decoding token headers."
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access with expired token — Negative test, validates API rejects expired tokens, Authentication & Authorization, Security",
+      "endpoint": "/branch/get_branch/bf7cbefe-dca3-470a-a509-f2343eb4f777",
+      "method": "GET",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Failed to get signing key: Error decoding token headers."
+      }
+    },
+    {
+      "test_id": "TC-006",
+      "category": "Authentication - Negative",
+      "type": "Negative-Authentication-Security",
+      "description": "Access with malformed token — Negative test, validates API rejects malformed tokens, Authentication & Authorization, Security",
+      "endpoint": "/branch/get_branch/bf7cbefe-dca3-470a-a509-f2343eb4f777",
+      "method": "GET",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": {
+        "detail": "Failed to get signing key: Error decoding token headers."
+      }
+    },
+    {
+      "test_id": "TC-007",
+      "category": "Role-based Access - Positive",
+      "type": "Positive-Role-Based",
+      "description": "Admin user successfully retrieves branch details",
+      "endpoint": "/branch/get_branch/3ef5b8a4-b4ee-4c98-8dbb-24d473cb4f51",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid_admin",
+      "expected_status": 200,
+      "expected_response": {
+        "status": 200,
+        "message": "Branch retrieved successfully",
+        "data": [
+          {
+            "branch_name": "Andhra Pradesh"
+          }
+        ]
+      }
+    },
+    {
+      "test_id": "TC-008",
+      "category": "Role-based Access - Negative",
+      "type": "Negative-Role-Based",
+      "description": "Aggregator tries to access branch details but is restricted",
+      "endpoint": "/branch/get_branch/3ef5b8a4-b4ee-4c98-8dbb-24d473cb4f51",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid_aggregator",
+      "expected_status": 403,
+      "expected_response": {
+        "detail": "Access denied: insufficient permissions"
+      }
+    },
+    {
+      "test_id": "TC-009",
+      "category": "Role-based Access - Negative",
+      "type": "Negative-Role-Based",
+      "description": "Branch tries to access branch details but is restricted",
+      "endpoint": "/branch/get_branch/3ef5b8a4-b4ee-4c98-8dbb-24d473cb4f51",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid_branch",
+      "expected_status": 403,
+      "expected_response": {
+        "detail": "Access denied: insufficient permissions"
+      }
+    }
+  ]
+}

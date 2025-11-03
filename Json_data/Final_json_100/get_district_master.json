@@ -1,0 +1,184 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalid123",
+    "expired": "expired_token_example",
+    "malformed": "1234@@invalid..token",
+    "empty": "",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Fetch district master data by valid state ID",
+      "category": "Positive / Data Validation",
+      "endpoint": "/master/get_district_master_by_state_id/ec3a25e8-2333-455a-bce9-9422a11342fb",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": [
+        "Successfully",
+        {
+          "mandatory_fields": [
+            "status",
+            "message",
+            "data"
+          ],
+          "field_types": {
+            "status": "int",
+            "message": "string",
+            "data": "list"
+          }
+        }
+      ],
+      "performance": {
+        "max_response_time_ms": 1000
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Negative - Invalid UUID format in state ID parameter",
+      "category": "Negative / Data Validation / Input Format",
+      "endpoint": "/master/get_district_master_by_state_id/invalid-uuid-123",
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_response": [
+        "Input should be a valid UUID"
+      ]
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Negative - Non-existing state ID returns not found",
+      "category": "Negative / Data Validation / Not Found",
+      "endpoint": "/master/get_district_master_by_state_id/aaaaaaaa-1111-2222-3333-ffffffffffff",
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_response": [
+        "does not exist",
+        "inactive"
+      ]
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Negative - Invalid authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/master/get_district_master_by_state_id/ec3a25e8-2333-455a-bce9-9422a11342fb",
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_response": [
+        "Invalid token",
+        "Unauthorized"
+      ]
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Missing authorization header",
+      "category": "Negative / Authentication / Missing Header",
+      "endpoint": "/master/get_district_master_by_state_id/ec3a25e8-2333-455a-bce9-9422a11342fb",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_response": [
+        "Missing or invalid Authorization",
+        "Unauthorized"
+      ]
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Negative - Expired token should not allow access",
+      "category": "Negative / Authentication / Expiry",
+      "endpoint": "/master/get_district_master_by_state_id/ec3a25e8-2333-455a-bce9-9422a11342fb",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_response": [
+        "Invalid token",
+        "Invalid token. Expected"
+      ]
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Negative - Malformed token (invalid structure or signature)",
+      "category": "Negative / Authentication / Malformed",
+      "endpoint": "/master/get_district_master_by_state_id/ec3a25e8-2333-455a-bce9-9422a11342fb",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_response": [
+        "Invalid token",
+        "Invalid token. Expected"
+      ]
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Performance - Ensure API responds within 1 second for valid request",
+      "category": "Performance / Response Time",
+      "endpoint": "/master/get_district_master_by_state_id/ec3a25e8-2333-455a-bce9-9422a11342fb",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": "Successfully",
+      "performance": {
+        "max_response_time_ms": 1000
+      }
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Admin user successfully retrieves district master data",
+      "category": "Role-based Access - Positive",
+      "endpoint": "/master/get_district_master_by_state_id/ec3a25e8-2333-455a-bce9-9422a11342fb",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid_admin",
+      "expected_status": 200,
+      "expected_response": [
+        "Successfully"
+      ]
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Aggregator successfully retrieves all districts",
+      "category": "Role-based Access - Negative",
+      "endpoint": "/master/get_district_master_by_state_id/ec3a25e8-2333-455a-bce9-9422a11342fb",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid_aggregator",
+      "expected_status": 200,
+      "expected_response": {
+        "detail": "Access granted"
+      }
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Branch successfully retrieves all districts",
+      "category": "Role-based Access - Negative",
+      "endpoint": "/master/get_district_master_by_state_id/ec3a25e8-2333-455a-bce9-9422a11342fb",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid_branch",
+      "expected_status": 200,
+      "expected_response": {
+        "detail": "Access granted"
+      }
+    }
+  ]
+}

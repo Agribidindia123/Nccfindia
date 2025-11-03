@@ -1,0 +1,147 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalid123",
+    "expired": "expired_token_example",
+    "malformed": "malformed@@token",
+    "empty": "",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Get districts by valid content",
+      "category": "Positive / Data Retrieval",
+      "endpoint": "/master/get_districts_by_content/Ambedkar Nagar",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "success",
+        "Ambedkar Nagar"
+      ]
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Negative - Missing Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/master/get_districts_by_content/Ambedkar Nagar",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_error_message_substring": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Negative - Expired Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/master/get_districts_by_content/Ambedkar Nagar",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_error_message_substring": "Token expired"
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Negative - Invalid Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/master/get_districts_by_content/Ambedkar Nagar",
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Malformed Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/master/get_districts_by_content/Ambedkar Nagar",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Negative - Invalid content with special characters",
+      "category": "Negative / Input Validation",
+      "endpoint": "/master/get_districts_by_content/@@@@###$$$",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_error_message_substring": "Invalid content"
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Negative - Empty content parameter",
+      "category": "Negative / Input Validation",
+      "endpoint": "/master/get_districts_by_content/",
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_error_message_substring": "Not Found"
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Boundary - Extremely long content string (100 chars)",
+      "category": "Boundary / Input Validation",
+      "endpoint": "/master/get_districts_by_content/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_error_message_substring": "Validation failed"
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Negative - Non-existing district content",
+      "category": "Negative / Data Validation",
+      "endpoint": "/master/get_districts_by_content/UnknownDistrict999",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_error_message_substring": "No records found"
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Positive - Admin token retrieves districts successfully",
+      "category": "Positive / Role-Based Access",
+      "endpoint": "/master/get_districts_by_content/Ambedkar Nagar",
+      "auth_token": "valid_admin",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "success",
+        "Ambedkar Nagar"
+      ]
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Positive - Aggregator token retrieves districts successfully",
+      "category": "Positive / Role-Based Access",
+      "endpoint": "/master/get_districts_by_content/Ambedkar Nagar",
+      "auth_token": "valid_aggregator",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "success",
+        "Ambedkar Nagar"
+      ]
+    },
+    {
+      "test_id": "TC-012",
+      "description": "Positive - Branch token retrieves districts successfully",
+      "category": "Positive / Role-Based Access",
+      "endpoint": "/master/get_districts_by_content/Ambedkar Nagar",
+      "auth_token": "valid_branch",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "success",
+        "Ambedkar Nagar"
+      ]
+    }
+  ]
+}

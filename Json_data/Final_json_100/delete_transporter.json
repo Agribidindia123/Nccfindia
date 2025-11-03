@@ -1,0 +1,121 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "DELETE",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalid123",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "malformed@@token",
+    "empty": "",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_branch": "<fetched_from_login_api_branch>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Delete transport service with valid ID",
+      "category": "Positive / Data Validation",
+      "endpoint": "/transport_service/delete_transport_service/8a5fc01e-ee8d-4b2e-950f-c175cf579bda",
+      "auth_token": "valid_aggregator",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Transport service deleted successfully"
+      ]
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Negative - Missing Authorization header",
+      "category": "Negative / Authentication",
+      "endpoint": "/transport_service/delete_transport_service/8a5fc01e-ee8d-4b2e-950f-c175cf579bda",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_error_message_substring": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Negative - Expired Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/transport_service/delete_transport_service/8a5fc01e-ee8d-4b2e-950f-c175cf579bda",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_error_message_substring": "Token expired"
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Negative - Invalid Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/transport_service/delete_transport_service/8a5fc01e-ee8d-4b2e-950f-c175cf579bda",
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Malformed Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/transport_service/delete_transport_service/8a5fc01e-ee8d-4b2e-950f-c175cf579bda",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Negative - Malformed transport_service_id",
+      "category": "Negative / Input Validation",
+      "endpoint": "/transport_service/delete_transport_service/8a5fc01e-",
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_error_message_substring": "Validation failed"
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Negative - Non-existing transport_service_id",
+      "category": "Negative / Data Validation",
+      "endpoint": "/transport_service/delete_transport_service/76e68c68-dca0-469b-9994-4f3dc066cef0",
+      "auth_token": "valid_aggregator",
+      "expected_status": 404,
+      "expected_error_message_substring": "No records found"
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Role-Based - Admin user cannot delete transport service successfully",
+      "category": "Positive / Role-Based Access Control",
+      "endpoint": "/transport_service/delete_transport_service/8a5fc01e-ee8d-4b2e-950f-c175cf579bda",
+      "auth_token": "valid_admin",
+      "expected_status": 403,
+      "expected_response_contains": [
+        "Permission denied"
+      ]
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Role-Based - Branch user cannot delete transport service",
+      "category": "Negative / Role-Based Access Control",
+      "endpoint": "/transport_service/delete_transport_service/8a5fc01e-ee8d-4b2e-950f-c175cf579bda",
+      "auth_token": "valid_branch",
+      "expected_status": 403,
+      "expected_error_message_substring": "Permission denied"
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Role-Based - Aggregator user can delete transport service",
+      "category": "Negative / Role-Based Access Control",
+      "endpoint": "/transport_service/delete_transport_service/8a5fc01e-ee8d-4b2e-950f-c175cf579bda",
+      "auth_token": "valid_aggregator",
+      "expected_status": 200,
+      "expected_error_message_substring": "Transport service deleted successfully"
+    }
+  ]
+}

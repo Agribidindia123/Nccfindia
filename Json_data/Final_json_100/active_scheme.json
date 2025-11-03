@@ -1,0 +1,158 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+   "valid": "<fetched_from_login_api>",
+    "invalid": "invalid123",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "malformed@@token",
+    "empty": "",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "category": "Functional-Positive - CRUD",
+      "description": "Activate a scheme using valid scheme_id and valid Admin token; verifies successful activation",
+      "method": "PATCH",
+      "endpoint": "/schemes/activate_scheme/a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "valid_admin",
+      "request_body": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-002",
+      "category": "Functional-Positive - Role-Based Access",
+      "description": "Activate a scheme using valid scheme_id with Super Admin role; verifies full access",
+      "method": "PATCH",
+      "endpoint": "/schemes/activate_scheme/a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "valid_admin",
+      "request_body": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-003",
+      "category": "Functional-Negative - Data Validation",
+      "description": "Attempt to activate a non-existing scheme_id; verifies API returns 404 for missing resource",
+      "method": "PATCH",
+      "endpoint": "/schemes/activate_scheme",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "valid_admin",
+      "request_body": {
+        "scheme_id": "11111111-2222-3333-4444-555555555555"
+      },
+      "expected_status": 404
+    },
+    {
+      "test_id": "TC-004",
+      "category": "Role-Based-Negative - Authorization",
+      "description": "Attempt to activate a scheme using Aggregator role; verifies access denied (forbidden)",
+      "method": "PATCH",
+      "endpoint": "/schemes/activate_scheme/a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "valid_aggregator",
+      "request_body": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "expected_status": 403
+    },
+    {
+      "test_id": "TC-005",
+      "category": "Role-Based-Negative - Authorization",
+      "description": "Attempt to activate a scheme using Branch role; verifies access denied (forbidden)",
+      "method": "PATCH",
+      "endpoint": "/schemes/activate_scheme/a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "valid_branch",
+      "request_body": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "expected_status": 403
+    },
+    {
+      "test_id": "TC-006",
+      "category": "Authentication-Negative - Security",
+      "description": "Attempt to activate a scheme with missing auth token; verifies unauthorized requests are rejected",
+      "method": "PATCH",
+      "endpoint": "/schemes/activate_scheme/a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "empty",
+      "request_body": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-007",
+      "category": "Authentication-Negative - Security",
+      "description": "Attempt to activate a scheme with invalid auth token; verifies API rejects invalid authentication",
+      "method": "PATCH",
+      "endpoint": "/schemes/activate_scheme/a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "invalid",
+      "request_body": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-008",
+      "category": "Authentication-Negative - Security",
+      "description": "Attempt to activate a scheme with expired token; verifies API rejects expired authentication",
+      "method": "PATCH",
+      "endpoint": "/schemes/activate_scheme/a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "expired",
+      "request_body": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-009",
+      "category": "Authentication-Negative - Security",
+      "description": "Attempt to activate a scheme with malformed token; verifies API rejects malformed authentication",
+      "method": "PATCH",
+      "endpoint": "/schemes/activate_scheme/a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth_token": "malformed",
+      "request_body": {
+        "scheme_id": "a28e0c3d-dfa4-49eb-8bc6-400cf7ac4375"
+      },
+      "expected_status": 401
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "expired": "expiredToken123",
+    "invalid": "invalidToken456",
+    "malformed": "malformed.token.example",
+    "empty": "",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_branch": "<fetched_from_login_api_branch>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC001",
+      "description": "Fetch procurements with valid token and valid page",
+      "type": "Positive",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "valid",
+      "query_params": {},
+      "expected_status": 200,
+      "expected_response": { "message": "Successfully" }
+    },
+    {
+      "test_id": "TC002",
+      "description": "Fetch procurements with valid token and optional filters",
+      "type": "Positive",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "valid",
+      "query_params": {
+        "scheme_master_id": "24510e0d-bb16-4a3e-8f81-a4230d848415",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128",
+        "crop_year_id": "78827df4-94b1-4034-93f6-ee5be6dc5080",
+        "farmer_id": "00036e33-b261-4e8b-92ed-9aaaad4f7caa"
+      },
+      "expected_status": 200,
+      "expected_response": { "message": "Successfully" }
+    },
+    {
+      "test_id": "TC003",
+      "description": "Fetch procurements with expired token",
+      "type": "Negative - Expired Token",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "expired",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_response": { "detail": "Missing or invalid Authorization header" }
+    },
+    {
+      "test_id": "TC004",
+      "description": "Fetch procurements with invalid token",
+      "type": "Negative - Invalid Token",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "invalid",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_response": { "detail": "Missing or invalid Authorization header" }
+    },
+    {
+      "test_id": "TC005",
+      "description": "Fetch procurements with malformed token",
+      "type": "Negative - Malformed Token",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "malformed",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_response": { "detail": "Missing or invalid Authorization header" }
+    },
+    {
+      "test_id": "TC006",
+      "description": "Fetch procurements with empty token",
+      "type": "Negative - Empty Token",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "empty",
+      "query_params": {},
+      "expected_status": 401,
+      "expected_response": { "detail": "Missing or invalid Authorization header" }
+    },
+    {
+      "test_id": "TC007",
+      "description": "Fetch procurements with invalid page number",
+      "type": "Negative - Invalid Page",
+      "endpoint": "/procurement/get_procurements/-1",
+      "auth_token": "valid",
+      "query_params": {},
+      "expected_status": 422,
+      "expected_response": { "detail": "Invalid page number" }
+    },
+    {
+      "test_id": "TC008",
+      "description": "Fetch procurements with malformed request parameters",
+      "type": "Negative - Malformed Request",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "valid",
+      "query_params": {
+        "aggregator_id": "!@#$%",
+        "nccf_branch_id": "abc123"
+      },
+      "expected_status": 422,
+      "expected_response": { "detail": "Bad Request" }
+    },
+    {
+      "test_id": "TC009",
+      "description": "Role-Based Access - Admin can fetch all procurements",
+      "type": "Role-Based",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "valid_admin",
+      "query_params": {},
+      "expected_status": 200,
+      "expected_response": { "message": "Successfully" }
+    },
+    {
+      "test_id": "TC010",
+      "description": "Role-Based Access - Aggregator can fetch procurements added under them",
+      "type": "Role-Based",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "valid_aggregator",
+      "query_params": {},
+      "expected_status": 200,
+      "expected_response": {  "message": "Successfully"}
+    },
+    {
+      "test_id": "TC011",
+      "description": "Role-Based Access - Branch can fetch procurements under their branch",
+      "type": "Role-Based",
+      "endpoint": "/procurement/get_procurements/1",
+      "auth_token": "valid_branch",
+      "query_params": {},
+      "expected_status": 200,
+      "expected_response": { "message": "Successfully" }
+    }
+  ]
+}

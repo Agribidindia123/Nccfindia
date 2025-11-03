@@ -1,0 +1,327 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Dm",
+    "empty": "",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "malformed": "iXd32fC8D!",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_branch": "<fetched_from_login_api_branch>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC001",
+      "category": "Functional-Positive",
+      "description": "Add transport service with all valid required and optional fields (GST included)",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid_aggregator",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC002",
+      "category": "Functional-Positive",
+      "description": "Add transport service with only required fields (GST excluded)",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid_aggregator",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC003",
+      "category": "Functional-Negative",
+      "description": "Missing mandatory field (pan_number)",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC004",
+      "category": "BVA-Negative",
+      "description": "Invalid PAN number format (less than 10 chars)",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "pan_number": "ABC34F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC005",
+      "category": "BVA-Negative",
+      "description": "Invalid mobile number (less than 10 digits)",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "65677",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC006",
+      "category": "Functional-Negative",
+      "description": "Invalid GST number format",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "valid",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AA0000A1Z5",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 422
+    },
+    {
+      "test_id": "TC007",
+      "category": "Authentication-Negative",
+      "description": "Request with invalid token",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "invalid",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 401,
+      "expected_error_message": "Invalid token"
+    },
+    {
+      "test_id": "TC008",
+      "category": "Authentication-Negative",
+      "description": "Request with expired token",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "expired",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 401,
+      "expected_error_message": "Token expired"
+    },
+    {
+      "test_id": "TC009",
+      "category": "Authentication-Negative",
+      "description": "Request with malformed token",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "auth_token": "malformed",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 401,
+      "expected_error_message": "Malformed token"
+    },
+    {
+      "test_id": "TC010",
+      "category": "Role-Based-Negative",
+      "description": "Admin user cannot add transport service (restricted role)",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "auth_token": "valid_admin",
+       "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 403,
+      "expected_error_message": "Permission denied for Admin user"
+    },
+    {
+      "test_id": "TC011",
+      "category": "Role-Based-Negative",
+      "description": "Branch user cannot add transport service (restricted role)",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "auth_token": "valid_branch",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 403,
+      "expected_error_message": "Permission denied for Branch user"
+    },
+    {
+      "test_id": "TC012",
+      "category": "Role-Based-Positive",
+      "description": "Aggregator user can add transport service successfully",
+      "method": "POST",
+      "endpoint": "/transport_service/add_transport_service",
+      "auth_token": "valid_aggregator",
+      "request_body": {
+        "transport_service_name": "Mumbai Transport Services",
+        "gst_number": "22AAAAA0000A1Z5",
+        "pan_number": "ABCDE1234F",
+        "transport_owner_name": "Ravi",
+        "mobile_number": "8967567890",
+        "email_id": "ravi@gmail.com",
+        "address": "Pune",
+        "pin_code": "447555",
+        "city_master_id": "dc6925f8-aa8b-4cf2-8d48-624c71aeaba8",
+        "district_master_id": "abe73aa6-4d21-4a3c-bcca-51e5a374e1a4",
+        "state_master_id": "52d700ac-efbd-447a-85a5-536d0d90056e"
+      },
+      "expected_status": 200,
+      "expected_response": "Aggregator user successfully added transport service"
+    }
+  ]
+}

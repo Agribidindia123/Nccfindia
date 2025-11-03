@@ -1,0 +1,147 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "method": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalid123",
+    "expired": "expired_token_example",
+    "malformed": "malformed@@token",
+    "empty": "",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>",
+    "valid_admin": "<fetched_admin_token>",
+    "valid_aggregator": "<fetched_aggregator_token>",
+    "valid_branch": "<fetched_branch_token>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "description": "Positive - Fetch all FED agencies without filter (aggregator_status not provided)",
+      "category": "Positive / Data Retrieval",
+      "endpoint": "/fed-agency/get_fed_agency",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Fetched",
+        "aggregator_name"
+      ]
+    },
+    {
+      "test_id": "TC-002",
+      "description": "Positive - Fetch agencies filtered by aggregator_status=ACTIVE",
+      "category": "Positive / Filter Parameter",
+      "endpoint": "/fed-agency/get_fed_agency?aggregator_status=1",
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response_contains": [
+        "Fetched",
+        "status"
+      ]
+    },
+    {
+      "test_id": "TC-003",
+      "description": "Negative - Invalid aggregator_status value",
+      "category": "Negative / Input Validation",
+      "endpoint": "/fed-agency/get_fed_agency?aggregator_status=@@@###",
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_error_message_substring": "Invalid aggregator_status"
+    },
+    {
+      "test_id": "TC-004",
+      "description": "Boundary - Very long aggregator_status parameter (100 characters)",
+      "category": "Boundary / Input Validation",
+      "endpoint": "/fed-agency/get_fed_agency?aggregator_status=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "auth_token": "valid",
+      "expected_status": 422,
+      "expected_error_message_substring": "Validation failed"
+    },
+    {
+      "test_id": "TC-005",
+      "description": "Negative - Missing Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/fed-agency/get_fed_agency",
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_error_message_substring": "Missing or invalid Authorization"
+    },
+    {
+      "test_id": "TC-006",
+      "description": "Negative - Invalid Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/fed-agency/get_fed_agency",
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC-007",
+      "description": "Negative - Expired Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/fed-agency/get_fed_agency",
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_error_message_substring": "Token expired"
+    },
+    {
+      "test_id": "TC-008",
+      "description": "Negative - Malformed Authorization token",
+      "category": "Negative / Authentication",
+      "endpoint": "/fed-agency/get_fed_agency",
+      "auth_token": "malformed",
+      "expected_status": 401,
+      "expected_error_message_substring": "Invalid token"
+    },
+    {
+      "test_id": "TC-009",
+      "description": "Negative - Non-existing aggregator_status parameter (e.g., UNKNOWN)",
+      "category": "Negative / Data Validation",
+      "endpoint": "/fed-agency/get_fed_agency?aggregator_status=3",
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_error_message_substring": "No records found"
+    },
+    {
+      "test_id": "TC-010",
+      "description": "Negative - Malformed URL path",
+      "category": "Negative / Malformed Request",
+      "endpoint": "/fed-agency/get_fed_agency///",
+      "auth_token": "valid",
+      "expected_status": 400,
+      "expected_error_message_substring": "Bad request"
+    },
+    {
+      "test_id": "TC-011",
+      "description": "Admin user retrieves all FED agencies",
+      "category": "Positive / Authorization",
+      "endpoint": "/fed-agency/get_fed_agency",
+      "auth_token": "valid_admin",
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-012",
+      "description": "Aggregator tries to access restricted FED agency data",
+      "category": "Negative / Authorization",
+      "endpoint": "/fed-agency/get_fed_agency",
+      "auth_token": "valid_aggregator",
+      "expected_status": 403
+    },
+    {
+      "test_id": "TC-013",
+      "description": "Branch tries to access warehouse data successfully",
+      "category": "Negative / Authorization",
+      "endpoint": "/fed-agency/get_fed_agency",
+      "auth_token": "valid_branch",
+      "expected_status": 200
+    }
+  ]
+}

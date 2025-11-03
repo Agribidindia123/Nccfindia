@@ -1,0 +1,240 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "iXd32fC8Dm",
+    "empty": "",
+    "expired": "iXd32fC8Dx",
+    "malformed": "iXd32fC8D!",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_branch": "<fetched_from_login_api_branch>",
+    "invalid_role": "invalid_role_token_example",
+    "expired_role": "expired_role_token_example",
+    "malformed_role": "malformed_role_token!@#",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "expired_id": "<replace_with_id_token_here>",
+    "malformed_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "malformed_id_id": "<replace_with_id_token_here>"
+  },
+
+  "test_cases": [
+    {
+      "test_id": "TC001",
+      "description": "Retrieve procurement details for valid lot_id",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "expected_response": {
+        "type": "array",
+        "mandatory_fields": [
+          "warehouse_id",
+          "warehouse_name",
+          "lot_id",
+          "quantity",
+          "unit_price",
+          "created_at"
+        ],
+        "schema_validation": "pass"
+      }
+    },
+    {
+      "test_id": "TC002",
+      "description": "Invalid lot_id (non-existent ID)",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TAL" },
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_error_message": "Procurement details not found for lot_id INVALID123"
+    },
+    {
+      "test_id": "TC003",
+      "description": "Special characters in lot_id",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "LOT@#$%^&*" },
+      "auth_token": "valid",
+      "expected_status": 404,
+      "expected_error_message": "Invalid lot_id format"
+    },
+    {
+      "test_id": "TC004",
+      "description": "Missing Authorization header",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": { "Content-Type": "application/json" },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_error_message": "Missing or invalid authorization token"
+    },
+    {
+      "test_id": "TC005",
+      "description": "Invalid token format",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Token 12345"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_error_message": "Malformed token format"
+    },
+    {
+      "test_id": "TC006",
+      "description": "Expired token",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "expired_id",
+      "expected_status": 401,
+      "expected_error_message": "Token expired"
+    },
+    {
+      "test_id": "TC007",
+      "description": "Missing Content-Type header",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": { "Authorization": "Bearer {auth_token}" },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "valid_id",
+      "expected_status": 401,
+      "expected_error_message": "Missing or invalid content type"
+    },
+        {
+      "test_id": "TC008",
+      "description": "Verify response time under load",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "valid",
+      "expected_status": 200,
+      "performance": {
+        "max_response_time_normal_ms": 2000,
+        "max_response_time_high_load_ms": 5000
+      }
+    },
+    {
+      "test_id": "TC009",
+      "description": "Access with Admin role token (Full access)",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "valid_admin",
+      "expected_status": 200,
+      "expected_response": {
+        "role_access": "admin",
+        "permissions": "full_access"
+      }
+    },
+    {
+      "test_id": "TC010",
+      "description": "Access with Aggregator role token (Limited access)",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "valid_aggregator",
+      "expected_status": 200,
+      "expected_response": {
+        "role_access": "aggregator",
+        "permissions": "Limited_access"
+      }
+    },
+    {
+      "test_id": "TC011",
+      "description": "Access with Branch role token (Limited access)",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "valid_branch",
+      "expected_status": 200,
+      "expected_response": {
+        "role_access": "aggregator",
+        "permissions": "Limited_access"
+      }
+    },
+    {
+      "test_id": "TC012",
+      "description": "Access with Invalid role token",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "invalid_role",
+      "expected_status": 401,
+      "expected_error_message": "Invalid role or token not recognized"
+    },
+    {
+      "test_id": "TC013",
+      "description": "Access with Expired role token",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "expired_role",
+      "expected_status": 401,
+      "expected_error_message": "Role token expired"
+    },
+    {
+      "test_id": "TC014",
+      "description": "Access with Malformed role token",
+      "method": "GET",
+      "endpoint": "/procurement/details_by_lot_id/{lot_id}",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {auth_token}"
+      },
+      "path_params": { "lot_id": "CT0TDH" },
+      "auth_token": "malformed_role",
+      "expected_status": 401,
+      "expected_error_message": "Malformed role token"
+    }
+  ]
+}

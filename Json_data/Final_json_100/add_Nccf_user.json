@@ -1,0 +1,205 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "invalid": "invalid12345",
+    "empty": "",
+    "expired": "eyJraWQiOiJKdFVvVndkMFdvTE5MaXFVQmVvK0xESE5DSjIrdDBCdHVIQk9NeFwvUDRDYz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmMTgzNmQwYS1hMDcxLTcwYmQtNzQ2OC0xNmIzOWExZWVjZmEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xX28zUEV5dmxHeiIsImNsaWVudF9pZCI6IjFpOHBmN29kaWw2aWltcjZhaXE5MjRmOGJxIiwib3JpZ2luX2p0aSI6IjAxYzUxMmY5LWRjN2UtNDBjMC1iMzk4LTkxZjYzZjkzMTcxOSIsImV2ZW50X2lkIjoiMzhiNmIxNmUtM2M2NC00MjM3LWE1MDEtODA3MDY3YThmNWY2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2MTU2MTg5OSwiZXhwIjoxNzYxNTY1NDk5LCJpYXQiOjE3NjE1NjE4OTksImp0aSI6IjEzYTZjYzM5LTA3ZjAtNGRhYS05OTgwLTI2YTU0ZWU5ZTQxMyIsInVzZXJuYW1lIjoidXNlcl9ha3NoYXQxMjMifQ.QVxFFIuor_gPAUCTFBnNAvcF-xNMJs1alEA4y5cERKsYG9MYRd3fUtfVMXk16Ix-luNz5rTHMI34qz64R_JDpkOodQN1yRyyYmuNE0OeMlY2DMC-lU1QEQUeZQ6pnAaPjQiOQ-tjubCrsXX2kDglOxF8DbkIQbhkc_hQ_aJOx867oHHeR3nFDZgy7NngseRw7MpoQRqIGxXi-oWXRWPkK3WhaouHwoznvlLrJ28DcPiUf69dLQiU3laxjVd0j8OpIWvW_4Mmcu3-nt5BOlAAprVtl-pVUWNv7CdERVxFNy64-xJA--G1YHcAcLjcIpvIGq-5J1rbNl7HuMUzFqMPBQ",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_branch": "<fetched_from_login_api_branch>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_id": "<fetched_from_login_api>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "Valid request body",
+      "auth_token": "valid",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "saiiiee@gmail.com",
+        "mobile_number": "9878700808",
+        "fullname": "saiii",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "bf8c27a5-a0dc-4e6a-9876-cfc4b8809ff3",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-002",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "Invalid auth token",
+      "auth_token": "invalid",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "authfail@gmail.com",
+        "mobile_number": "9036133775",
+        "fullname": "rahul naik",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "bf8c27a5-a0dc-4e6a-9876-cfc4b8809ff3",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-003",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "Empty auth token",
+      "auth_token": "empty",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "emptytoken@gmail.com",
+        "mobile_number": "9036133776",
+        "fullname": "rahul naik",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "bf8c27a5-a0dc-4e6a-9876-cfc4b8809ff3",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 401
+    },
+    {
+      "test_id": "TC-004",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "Email already exists",
+      "auth_token": "valid",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "rahulrk10@gmail.com",
+        "mobile_number": "9036133770",
+        "fullname": "rahul naik",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "bf8c27a5-a0dc-4e6a-9876-cfc4b8809ff3",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 409
+    },
+    {
+      "test_id": "TC-005",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "Mobile number already exists",
+      "auth_token": "valid",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "newuser12@gmail.com",
+        "mobile_number": "9036133760",
+        "fullname": "rahul naikm",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "bf8c27a5-a0dc-4e6a-9876-cfc4b8809ff3",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 409
+    },
+    {
+      "test_id": "TC-006",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "Branch ID does not exist",
+      "auth_token": "valid",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "branchfail@gmail.com",
+        "mobile_number": "9036133780",
+        "fullname": "rahul naik",
+        "nccf_branch_id": "bf8c27a5-0dc-4e6a-9876-cfc4b8809ff3",
+        "city_master_id": "bf8c27a5-0dc-4e6a-9876-cfc4b8809ff3",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 400
+    },
+    {
+      "test_id": "TC-007",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "City ID does not exist",
+      "auth_token": "valid",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "cityfail@gmail.com",
+        "mobile_number": "9036133781",
+        "fullname": "rahul naik",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 400
+    },
+    {
+      "test_id": "TC-008",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "State ID does not exist",
+      "auth_token": "valid",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "statefail@gmail.com",
+        "mobile_number": "9036133782",
+        "fullname": "rahul naik",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "bf8c27a5-0dc-4e6a-9876-cfc4b8809ff0",
+        "state_master_id": "bf8c27a5-0cc7-483a-af94-822dbad33b90"
+      },
+      "expected_status": 400
+    },
+    {
+      "test_id": "TC-009",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "Role-Based - Admin: Can add NCCF user successfully",
+      "auth_token": "valid_admin",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "admin_add@gmail.com",
+        "mobile_number": "9878700901",
+        "fullname": "Admin User",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "bf8c27a5-a0dc-4e6a-9876-cfc4b8809ff3",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-010",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "Role-Based - Branch: Can add NCCF user successfully",
+      "auth_token": "valid_branch",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "branch_user@gmail.com",
+        "mobile_number": "9878700902",
+        "fullname": "Branch User",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "bf8c27a5-a0dc-4e6a-9876-cfc4b8809ff3",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 200
+    },
+    {
+      "test_id": "TC-011",
+      "endpoint": "/nccf_user/add_nccf_user",
+      "method": "POST",
+      "description": "Role-Based - Aggregator: Cannot add NCCF user",
+      "auth_token": "valid_aggregator",
+      "content_type": "application/x-www-form-urlencoded",
+      "request_body": {
+        "email_id": "aggregator_add@gmail.com",
+        "mobile_number": "9878700903",
+        "fullname": "Aggregator User",
+        "nccf_branch_id": "f9507225-5360-430b-97b0-5289930bf577",
+        "city_master_id": "bf8c27a5-a0dc-4e6a-9876-cfc4b8809ff3",
+        "state_master_id": "6b50ae46-40e1-4c3a-bc1c-a3b2dd3cf6ee"
+      },
+      "expected_status": 403
+    }
+  ]
+}

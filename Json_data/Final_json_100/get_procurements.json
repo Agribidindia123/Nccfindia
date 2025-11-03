@@ -1,0 +1,184 @@
+{
+  "base_url": "https://uat-api.nccfindia.com",
+  "endpoint": "/procurement/get_procurements",
+  "method": "GET",
+  "content_type": "application/json",
+  "tokens": {
+    "valid": "<fetched_from_login_api>",
+    "expired": "expiredToken123",
+    "invalid": "invalidToken456",
+    "empty": "",
+    "valid_admin": "<fetched_from_login_api_admin>",
+    "valid_aggregator": "<fetched_from_login_api_aggregator>",
+    "valid_branch": "<fetched_from_login_api_branch>",
+    "valid_id": "<fetched_from_login_api>",
+    "expired_id": "<replace_with_id_token_here>",
+    "invalid_id": "<replace_with_id_token_here>",
+    "valid_id_id": "<replace_with_id_token_here>",
+    "expired_id_id": "<replace_with_id_token_here>",
+    "invalid_id_id": "<replace_with_id_token_here>"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC001",
+      "description": "Fetch all procurements without filters using valid token",
+      "test_type": "Positive - Functional",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {},
+      "expected_status": 200,
+      "expected_result": "Successfully retrieves all procurements with pagination details"
+    },
+    {
+      "test_id": "TC002",
+      "description": "Fetch procurements by valid aggregator_id",
+      "test_type": "Positive - Data Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {
+        "aggregator_id": "1a2b3c4d-5e6f-7a8b-9c0d-1234567890ab"
+      },
+      "expected_status": 200,
+      "expected_result": "Returns procurements filtered by aggregator_id"
+    },
+    {
+      "test_id": "TC003",
+      "description": "Fetch procurements by valid nccf_branch_id",
+      "test_type": "Positive - Data Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {
+        "nccf_branch_id": "19326db4-cfbc-461e-a57e-2a2498e7940d"
+      },
+      "expected_status": 200,
+      "expected_result": "Returns procurements filtered by branch"
+    },
+    {
+      "test_id": "TC004",
+      "description": "Fetch procurements by valid scheme_master_id and commodity_master_id",
+      "test_type": "Positive - Integration",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {
+        "scheme_master_id": "24510e0d-bb16-4a3e-8f81-a4230d848415",
+        "commodity_master_id": "bf7cbefe-dca3-470a-a509-f2343eb4f128"
+      },
+      "expected_status": 200,
+      "expected_result": "Returns procurements filtered by scheme and commodity"
+    },
+    {
+      "test_id": "TC005",
+      "description": "Fetch procurements by valid farmer_id",
+      "test_type": "Positive - Data Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {
+        "farmer_id": "00036e33-b261-4e8b-92ed-9aaaad4f7caa"
+      },
+      "expected_status": 200,
+      "expected_result": "Returns procurements for given farmer"
+    },
+    {
+      "test_id": "TC006",
+      "description": "Fetch procurements - pagination test (page 2)",
+      "test_type": "Positive - Pagination",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {
+        "page": 2
+      },
+      "expected_status": 200,
+      "expected_result": "Returns next page of procurements with pagination meta info"
+    },
+    {
+      "test_id": "TC007",
+      "description": "Fetch procurements with invalid aggregator_id format",
+      "test_type": "Negative - Malformed Input",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {
+        "aggregator_id": "@@@INVALID###"
+      },
+      "expected_status": 422,
+      "expected_result": "Returns validation error for invalid aggregator_id format"
+    },
+    {
+      "test_id": "TC008",
+      "description": "Fetch procurements with non-existent but valid UUID",
+      "test_type": "Negative - Data Validation",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {
+        "scheme_master_id": "00000000-0000-0000-0000-000000000000"
+      },
+      "expected_status": 200,
+      "expected_result": "No records found, returns empty data array"
+    },
+       {
+      "test_id": "TC009",
+      "description": "Fetch procurements with expired token",
+      "test_type": "Negative - Authentication",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "expired",
+      "expected_status": 401,
+      "expected_result": "Unauthorized - token expired"
+    },
+    {
+      "test_id": "TC010",
+      "description": "Fetch procurements with invalid token",
+      "test_type": "Negative - Authentication",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "invalid",
+      "expected_status": 401,
+      "expected_result": "Unauthorized - invalid token"
+    },
+    {
+      "test_id": "TC011",
+      "description": "Fetch procurements with missing token",
+      "test_type": "Negative - Authentication",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "empty",
+      "expected_status": 401,
+      "expected_result": "Unauthorized - missing authentication header"
+    },
+    {
+      "test_id": "TC012",
+      "description": "Role-Based Access - Admin can fetch all procurements",
+      "test_type": "Role-Based",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "valid_admin",
+      "expected_status": 200,
+      "expected_result": "Successfully retrieved procurements for admin"
+    },
+    {
+      "test_id": "TC013",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "description": "Role-Based Access - Aggregator can fetch procurements added under them",
+      "test_type": "Role-Based",
+      "auth_token": "valid_aggregator",
+      "query_params": {},
+      "expected_status": 200,
+      "expected_message": "Successfully retrieved procurements"
+    },
+    {
+      "test_id": "TC014",
+      "description": "Role-Based Access - Branch can fetch only procurements under their branch",
+      "test_type": "Role-Based",
+      "endpoint": "/procurement/get_procurements",
+      "method": "GET",
+      "query_params": {},
+      "auth_token": "valid_branch",
+      "expected_status": 200,
+      "expected_result": "Successfully retrieved procurements for branch"
+    }
+  ]
+}
