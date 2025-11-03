@@ -2,33 +2,37 @@ name: API Tests
 
 on:
   push:
-    branches:
-      - main
   pull_request:
+  workflow_dispatch:
 
 jobs:
-  test:
+  run-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: pip install -r requirements.txt
 
-      - name: Run API Tests (Python script)
-        run: |
-          python tests/all_role_based_json.py
+    - name: Run API Tests (Python script)
+      env:
+        LOGIN_USER_ADMIN: ${{ secrets.LOGIN_USER_ADMIN }}
+        LOGIN_PASS_ADMIN: ${{ secrets.LOGIN_PASS_ADMIN }}
+        LOGIN_API_URL: ${{ secrets.LOGIN_API_URL }}
+        BASE_URL: ${{ secrets.BASE_URL }}
+      run: |
+        python tests/all_role_based_json.py
 
-      - name: Upload Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: api-test-reports
-          path: reports/
+    - name: Upload Reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-test-reports
+        path: reports/
+        if-no-files-found: warn
