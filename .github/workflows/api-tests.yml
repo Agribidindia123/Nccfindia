@@ -23,10 +23,9 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Run API Tests
+      - name: Run API Tests (Python script)
         run: |
-          pytest tests/ --html=reports/report.html --self-contained-html \
-                         --json-report --json-report-file=reports/report.json
+          python tests/all_role_based_json.py
 
       - name: Upload Reports
         uses: actions/upload-artifact@v4
