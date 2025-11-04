@@ -15,8 +15,8 @@ import sys
 # ================================================================
 # Configuration
 # ================================================================
-BASE_DIR = Path(__file__).resolve().parent.parent
-JSON_DIR = BASE_DIR / "Json_data" / "Final_json_100"
+BASE_DIR = Path("C:/Users/HP/PycharmProjects/PythonProject")
+JSON_DIR = BASE_DIR / "Json_data/rolebased"
 REPORTS_DIR = BASE_DIR / "reports"
 REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -26,17 +26,16 @@ RESULT_FILE = REPORTS_DIR / "latest_results.json"
 # Automatically keep only the latest 5 reports
 MAX_REPORTS_TO_KEEP = 5
 
+
 def cleanup_old_reports():
     try:
         reports = sorted(REPORTS_DIR.glob("api_report_*.html"), key=os.path.getmtime, reverse=True)
         for old_report in reports[MAX_REPORTS_TO_KEEP:]:
-            try:
-                old_report.unlink()
-                print(f"🧹 Deleted old report: {old_report.name}")
-            except Exception as e:
-                print(f"⚠️ Failed to delete {old_report}: {e}")
+            old_report.unlink()
+            print(f"🧹 Deleted old report: {old_report.name}")
     except Exception as e:
         print(f"⚠️ Cleanup failed: {e}")
+
 
 # Perform cleanup on startup
 cleanup_old_reports()
@@ -76,6 +75,7 @@ ROLE_CREDENTIALS = {
     }
 }
 
+
 # ================================================================
 # Tokens: fetch from /auth/login API
 # ================================================================
@@ -104,8 +104,10 @@ def get_tokens_from_api(role="admin"):
         print(f"❌ Failed to fetch tokens for {role}: {e}")
         return {"access_token": "", "id_token": "", "refresh_token": ""}
 
+
 def deterministic_dummy_id_token(seed_value: str) -> str:
     return f"dummy-id-{abs(hash(seed_value)) % (10 ** 12)}"
+
 
 def redact_headers(headers):
     redacted = {}
@@ -116,17 +118,16 @@ def redact_headers(headers):
             redacted[k] = v
     return redacted
 
+
 # ================================================================
 # Logging
 # ================================================================
 def log_message(msg):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    try:
-        with open(LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(f"[{timestamp}] {msg}\n")
-    except Exception:
-        pass
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(f"[{timestamp}] {msg}\n")
     print(msg)
+
 
 # ================================================================
 # Response Validation
@@ -200,6 +201,7 @@ def validate_response_simple(resp_json, expected_response, query_content=None, t
 
     return (len(errors) == 0), errors
 
+
 def validate_headers(resp_headers, expected_headers):
     errors = []
     for key, expected_value in (expected_headers or {}).items():
@@ -209,6 +211,7 @@ def validate_headers(resp_headers, expected_headers):
         elif str(actual_value).lower() != str(expected_value).lower():
             errors.append(f"Header '{key}' mismatch: expected '{expected_value}', got '{actual_value}'")
     return (len(errors) == 0), errors
+
 
 # ================================================================
 # Pre-fetch all tokens at startup
@@ -221,11 +224,7 @@ role_map = {
     "valid": "admin"  # assuming 'valid' uses admin login
 }
 for key, role in role_map.items():
-    try:
-        ALL_TOKENS[key] = get_tokens_from_api(role)
-    except Exception as e:
-        ALL_TOKENS[key] = {"access_token": "", "id_token": "", "refresh_token": ""}
-        log_message(f"Failed to prefetch token for {role}: {e}")
+    ALL_TOKENS[key] = get_tokens_from_api(role)
 
 # ================================================================
 # Test Execution
@@ -233,9 +232,10 @@ for key, role in role_map.items():
 SUMMARY = {"total": 0, "passed": 0, "failed": 0, "skipped": 0, "results": [], "slow_tests": []}
 PERF_STATS = []
 
+
 def run_all_tests():
     overall_start = time.time()
-    log_message("🔹 Starting API tests...\n")
+    log_message("🔹 Starting GET API tests...\n")
 
     for json_file in JSON_DIR.rglob("*.json"):
         log_message(f"Loading JSON file: {json_file}")
@@ -261,7 +261,16 @@ def run_all_tests():
             log_message(f"Processing test: {test_id}, method: {method}, endpoint: {endpoint}")
             SUMMARY["total"] += 1
 
-            # Validate endpoint exists
+            if method != "GET":
+                log_message(f"⚠️ Skipping {test_id} → Non-GET method ({method})")
+                SUMMARY["skipped"] += 1
+                SUMMARY["results"].append({
+                    "id": test_id, "desc": desc, "status_code": "-", "result": "SKIPPED",
+                    "details": f"Skipped non-GET method ({method})", "api_name": f"{method} {endpoint}",
+                    "method": method, "endpoint": endpoint
+                })
+                continue
+
             if not endpoint:
                 log_message(f"⚠️ Skipping {test_id} → Missing endpoint")
                 SUMMARY["skipped"] += 1
@@ -271,11 +280,9 @@ def run_all_tests():
                 })
                 continue
 
-            # Merge headers and compute url, params, path params
             headers = {**file_headers, **(case.get("headers", {}) or {}), "Accept": "application/json"}
             params = case.get("query_params", {}) or {}
             path_params = case.get("path_params", {}) or {}
-            # Replace placeholders in endpoint
             for ph in re.findall(r"\{(\w+)\}", endpoint):
                 if ph in path_params:
                     endpoint = endpoint.replace(f"{{{ph}}}", str(path_params[ph]))
@@ -288,9 +295,7 @@ def run_all_tests():
             if token_key in ALL_TOKENS:
                 TOKENS = ALL_TOKENS[token_key]
                 headers["Authorization"] = f"Bearer {TOKENS.get('access_token', '')}"
-                # add X-ID-Token if available
-                if TOKENS.get("id_token"):
-                    headers["X-ID-Token"] = TOKENS.get("id_token", "")
+                headers["X-ID-Token"] = TOKENS.get("id_token", "")
             elif token_key == "empty":
                 headers.pop("Authorization", None)
                 headers.pop("X-ID-Token", None)
@@ -300,83 +305,13 @@ def run_all_tests():
                 headers["X-ID-Token"] = deterministic_dummy_id_token(token_key)
 
             # ---------------------------
-            # Prepare body for non-GET methods
-            # ---------------------------
-            body_payload = case.get("body") or case.get("request_body") or case.get("payload") or None
-            # Detect content type from headers
-            content_type = headers.get("Content-Type", "").lower()
-
-            # Prepare request body depending on content type
-            request_args = {}
-
-            if body_payload:
-                if "application/json" in content_type:
-                    request_args["json"] = body_payload
-                elif "application/x-www-form-urlencoded" in content_type:
-                    request_args["data"] = body_payload
-                elif "multipart/form-data" in content_type:
-                    # Convert to files/fields
-                    files = {}
-                    data = {}
-                    for k, v in body_payload.items():
-                        if isinstance(v, dict) and v.get("file_path"):
-                            files[k] = open(v["file_path"], "rb")
-                        else:
-                            data[k] = v
-                    request_args["data"] = data
-                    if files:
-                        request_args["files"] = files
-                        headers.pop("Content-Type", None)  # let requests set boundary
-                else:
-                    request_args["data"] = body_payload  # fallback: send raw form
-
-            # ---------------------------
-            # Test request & validation with retries
+            # Test request & validation
             # ---------------------------
             attempt = 0
             while attempt <= MAX_RETRIES:
                 start = time.perf_counter()
                 try:
-                    # Dispatch request by method
-                    if method == "GET":
-                        resp = requests.get(
-                            url, headers=headers, params=params if params else None, timeout=30
-                        )
-
-                    elif method == "POST":
-                        resp = requests.post(
-                            url, headers=headers, params=params if params else None, **request_args, timeout=30
-                        )
-
-                    elif method == "PUT":
-                        resp = requests.put(
-                            url, headers=headers, params=params if params else None, **request_args, timeout=30
-                        )
-
-                    elif method == "PATCH":
-                        resp = requests.patch(
-                            url, headers=headers, params=params if params else None, **request_args, timeout=30
-                        )
-
-                    elif method == "DELETE":
-                        # Some DELETE endpoints accept body
-                        if body_payload:
-                            resp = requests.delete(url, headers=headers, json=body_payload, params=params, timeout=30)
-                        else:
-                            resp = requests.delete(url, headers=headers, params=params, timeout=30)
-
-                    else:
-                        log_message(f"⚠️ Skipping {test_id} → Unsupported method ({method})")
-                        SUMMARY["skipped"] += 1
-                        SUMMARY["results"].append({
-                            "id": test_id, "desc": desc, "status_code": "-",
-                            "result": "SKIPPED",
-                            "details": f"Unsupported HTTP Method: {method}",
-                            "api_name": f"{method} {endpoint}",
-                            "method": method, "endpoint": endpoint
-                        })
-                        break
-
+                    resp = requests.get(url, headers=headers, params=params, timeout=30)
                     elapsed_ms = int((time.perf_counter() - start) * 1000)
                     PERF_STATS.append(elapsed_ms)
                     status_code = resp.status_code
@@ -392,28 +327,21 @@ def run_all_tests():
                     errors = []
 
                     expected_status = case.get("expected_status")
-                    # expected_status can be int or list
-                    if expected_status is not None:
-                        if isinstance(expected_status, list):
-                            if status_code not in expected_status:
-                                test_passed = False
-                                errors.append(f"Expected one of {expected_status}, got {status_code}")
-                        else:
-                            if status_code != expected_status:
-                                test_passed = False
-                                errors.append(f"Expected {expected_status}, got {status_code}")
+                    if expected_status and status_code != expected_status:
+                        test_passed = False
+                        errors.append(f"Expected {expected_status}, got {status_code}")
 
                     expected_resp = case.get("expected_response") or case.get("expected_response_options")
-                    query_content = params.get("content") if isinstance(params, dict) else None
+                    query_content = params.get("content")
                     nested_keys = case.get("nested_keys", {})  # nested validation
                     if expected_resp or nested_keys:
-                        valid, err = validate_response_simple(resp_json, expected_resp or {}, query_content=query_content,
+                        valid, err = validate_response_simple(resp_json, expected_resp or {},
+                                                              query_content=query_content,
                                                               test_type=test_type, nested_keys=nested_keys)
                         if not valid:
                             test_passed = False
                             errors.extend(err)
 
-                    # Validate headers against file_headers (not case sensitive)
                     headers_valid, header_errors = validate_headers(resp.headers, file_headers)
                     if not headers_valid:
                         test_passed = False
@@ -436,9 +364,7 @@ def run_all_tests():
 Scenario: {desc}
 URL: {method} {url}
 Headers: {redact_headers(headers)}
-Request Params / Body:
 {_html.escape(request_display)}
-{_html.escape(json.dumps(body_payload, indent=2, ensure_ascii=False)) if body_payload else '-'}
 
 --- Response {test_id} --- 
 Status: {status_code}
@@ -471,7 +397,7 @@ Body:
                     else:
                         SUMMARY["failed"] += 1
 
-                    break  # success or validation failure -> stop retrying
+                    break
 
                 except requests.RequestException as e:
                     attempt += 1
@@ -488,26 +414,6 @@ Body:
                             "method": method,
                             "endpoint": endpoint
                         })
-                        break
-                    else:
-                        time.sleep(RETRY_DELAY)
-                except Exception as e:
-                    # Catch-all to ensure loop doesn't break silently
-                    attempt += 1
-                    log_message(f"❌ Unexpected error in test {test_id} attempt {attempt}: {e}")
-                    if attempt > MAX_RETRIES:
-                        SUMMARY["failed"] += 1
-                        SUMMARY["results"].append({
-                            "id": test_id,
-                            "desc": desc,
-                            "status_code": "ERROR",
-                            "result": "FAIL",
-                            "details": f"<pre>Exception: {_html.escape(str(e))}</pre>",
-                            "api_name": f"{method} {endpoint}",
-                            "method": method,
-                            "endpoint": endpoint
-                        })
-                        break
                     else:
                         time.sleep(RETRY_DELAY)
 
@@ -515,8 +421,9 @@ Body:
     max_time = max(PERF_STATS) if PERF_STATS else 0
     min_time = min(PERF_STATS) if PERF_STATS else 0
 
-    log_message(f"\n🔹 All tests completed")
+    log_message(f"\n🔹 All GET tests completed")
     return SUMMARY, {"avg": avg_time, "max": max_time, "min": min_time}
+
 
 # HTML Report Generator
 # ================================================================
@@ -606,6 +513,7 @@ def generate_html(summary, perf_stats):
     html_content += "</body></html>"
     return html_content
 
+
 # ================================================================
 # Entry Point
 # ================================================================
@@ -616,17 +524,7 @@ if __name__ == "__main__":
     html = generate_html(final_summary, perf_stats)
     report_file.write_text(html, encoding="utf-8")
     log_message(f"\n✅ HTML report generated successfully: {report_file}")
-    try:
-        webbrowser.open(report_file.as_uri())
-    except Exception:
-        pass
-
-    # Save latest results JSON (optional)
-    try:
-        with open(RESULT_FILE, "w", encoding="utf-8") as rf:
-            json.dump(final_summary, rf, indent=2, ensure_ascii=False)
-    except Exception:
-        pass
+    webbrowser.open(report_file.as_uri())
 
     # Exit code for CI/CD
     sys.exit(1 if final_summary["failed"] > 0 else 0)
