@@ -25,6 +25,10 @@ jobs:
       env:
         LOGIN_USER_ADMIN: ${{ secrets.LOGIN_USER_ADMIN }}
         LOGIN_PASS_ADMIN: ${{ secrets.LOGIN_PASS_ADMIN }}
+        LOGIN_USER_AGGREGATOR: ${{ secrets.LOGIN_USER_AGGREGATOR }}
+        LOGIN_PASS_AGGREGATOR: ${{ secrets.LOGIN_PASS_AGGREGATOR }}
+        LOGIN_USER_BRANCH: ${{ secrets.LOGIN_USER_BRANCH }}
+        LOGIN_PASS_BRANCH: ${{ secrets.LOGIN_PASS_BRANCH }}
         LOGIN_API_URL: ${{ secrets.LOGIN_API_URL }}
         BASE_URL: ${{ secrets.BASE_URL }}
       run: |
