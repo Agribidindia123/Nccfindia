@@ -1,5 +1,5 @@
 requests
-python-.env
+python-dotenv
 pytest
 pytest-html
 pytest-json-report
